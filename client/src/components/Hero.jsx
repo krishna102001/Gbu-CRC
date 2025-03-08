@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import { useContext, useRef } from "react";
 import { assets } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 import bgimage from "../assets/gbu_banner.jpg";

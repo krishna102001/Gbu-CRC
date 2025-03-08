@@ -1,4 +1,3 @@
-import React from "react";
 import calltoaction from "../assets/gbu_banner1.jpg";
 import { motion } from "framer-motion";
 

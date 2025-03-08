@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import { assets } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 import logo from "../assets/gbu_logo.png";

@@ -1,4 +1,3 @@
-import React from "react";
 import logo from "../assets/gbu_logo.png";
 import { motion } from "framer-motion";
 
