@@ -8,7 +8,9 @@ import companyRoutes from "./routes/companyRoutes.js";
 import connectCloudinary from "./config/cloudinary.js";
 import JobRoutes from "./routes/jobRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import studentRoutes from "./routes/StudentRoutes.js";
 import { clerkMiddleware } from "@clerk/express";
+import { defaultOtpCleanup } from "./utils/defaultOtpCleanup.js";
 // Initialize Express
 const app = express();
 
@@ -35,6 +37,9 @@ app.get("/debug-sentry", function mainHandler(req, res) {
 app.use("/api/company", companyRoutes);
 app.use("/api/jobs", JobRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/students", studentRoutes);
+
+setInterval(() => defaultOtpCleanup(), 1000 * 60);
 
 // Start the server
 const port = process.env.PORT || 3000;
