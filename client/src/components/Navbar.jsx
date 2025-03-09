@@ -1,18 +1,32 @@
 import { useContext } from "react";
 
-import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
-import { Link, useNavigate } from "react-router-dom";
+// import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import logo from "../assets/gbu_logo.png";
 import { motion } from "framer-motion";
 
 const Navbar = () => {
-  const { openSignIn } = useClerk();
-  const { user } = useUser();
+  // const { openSignIn } = useClerk();
+  // const { user } = useUser();
 
   const navigate = useNavigate();
 
-  const { setShowRecruiterLogin } = useContext(AppContext);
+  const {
+    setShowRecruiterLogin,
+    setShowStudentLogin,
+    userData,
+    setUserToken,
+    setUserData,
+  } = useContext(AppContext);
+  const user = userData;
+
+  const logout = () => {
+    setUserToken(null);
+    localStorage.removeItem("studentToken");
+    setUserData(null);
+    navigate("/");
+  };
 
   return (
     <motion.div
@@ -45,13 +59,31 @@ const Navbar = () => {
           </div>
 
           {user ? (
-            <div className='flex items-center gap-3 font-primary text-[12px]'>
-              <Link to='/applications'>Applied Jobs</Link>
-              <p>|</p>
-              <p className='max-sm:hidden'>
-                Hi, {user.firstName} {user.lastName || ""}
-              </p>
-              <UserButton />
+            <div className='flex items-center gap-3 font-primary text-[14px]'>
+              <p className='max-sm:hidden'>Hi, {user.name}</p>
+              <div className='relative group'>
+                <img
+                  className='w-10 h-10 border rounded-full'
+                  src={userData.image}
+                  alt=''
+                />
+                <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-12'>
+                  <ul className='list-none m-0 p-2 bg-white rounded-md border text-sm'>
+                    <li
+                      className='p-2 w-full border-b-2 cursor-pointer'
+                      onClick={() => navigate("/applications")}
+                    >
+                      Applied Jobs
+                    </li>
+                    <li
+                      onClick={logout}
+                      className='py-1 px-2 cursor-pointer pr-10'
+                    >
+                      Logout
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
           ) : (
             <div className='flex gap-4 max:sm:text-xs'>
@@ -62,7 +94,7 @@ const Navbar = () => {
                 Recruiter Login
               </button>
               <button
-                onClick={(e) => openSignIn()}
+                onClick={(e) => setShowStudentLogin(true)}
                 className='bg-primary text-white px-4 sm:px-8 py-2 rounded-xl font-primary text-sm sm:text-2xl hover:bg-slate-600 transition duration-300 ease-in-out transform hover:-translate-y-[3px]'
               >
                 Login
