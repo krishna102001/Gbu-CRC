@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { AppContext } from "../context/AppContext";
-import { assets, JobCategories, JobLocations } from "../assets/assets";
+import { assets, JobCategories } from "../assets/assets";
 import JobCard from "./JobCard";
 
 const ting = () => {
@@ -184,26 +184,6 @@ const ting = () => {
             ))}
           </ul>
         </div>
-
-        {/* <div className={showFilter ? "" : "hidden lg:block"}>
-          <h4 className="font-bold text-larger py-4 pt-14 font-primary">Search by Location</h4>
-          <ul className="space-y-4 text-gray-600">
-            {JobLocations.slice(0, showAllLocations ? JobLocations.length : 5).map((location, index) => (
-              <li key={index} className="flex gap-3 items-center">
-                <input
-                  className="scale-125 text-primary rounded-lg"
-                  type="checkbox"
-                  onChange={() => handleLocationChange(location)}
-                  checked={selectedLocation.includes(location)}
-                />
-                <label className="cursor-pointer" htmlFor={`location-${index}`}>
-                  {location}
-                </label>
-              </li>
-            ))}
-          </ul>
-          
-        </div> */}
       </div>
 
       {/* JOB LISTING SECTION WITH TRANSITIONS */}

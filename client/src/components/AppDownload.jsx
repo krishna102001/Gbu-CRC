@@ -1,7 +1,4 @@
-import React from "react";
-import { assets } from "../assets/assets";
-import Bgimage from "../assets/gbu_crc.jpeg";
-import { Link } from "react-router-dom";
+import Bgimage from "../assets/Vinay_kumar.jpeg";
 import { motion } from "framer-motion";
 
 const AppDownload = () => {
@@ -96,28 +93,19 @@ const AppDownload = () => {
                   </div>
                 </dl>
               </div>
-              {/* <div className='mt-10 flex items-center gap-x-6'>
-                <a
-                  href='/'
-                  className='rounded-md bg-primary   px-8 py-4 text-md font-primary font-semibold text-white shadow-sm hover:bg-slate-600 transition duration-300 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-                >
-                  Find Jobs
-                </a>
-                <Link
-                  to='/recruiter-login'
-                  className='text-sm font-semibold leading-6 text-gray-700'
-                >
-                  Recruiter Dashboard
-                  <span aria-hidden='true'>→</span>
-                </Link>
-              </div> */}
             </div>
-            <div className='flex item-center justify-center'>
+            <div className='flex item-center flex-col items-center justify-center'>
               <img
                 src={Bgimage}
                 alt='Product screenshot'
-                className='h-full w-full rounded-xl shadow-xl ring-1 ring-gray-400/10 border-[#BEBEBE] object-cover lg:h-auto'
+                className='h-full  rounded-xl shadow-xl ring-1 ring-gray-400/10 border-[#BEBEBE] object-cover lg:h-auto'
+                width={300}
+                height={300}
               />
+              <p className='text-4xl mt-4 tracking-wide'>
+                Dr. Vinay Kumar Litoria{" "}
+              </p>
+              <p className='text-lg'>(Director of Corporate Relations Cell)</p>
             </div>
           </div>
         </div>
