@@ -150,7 +150,10 @@ const ViewApplications = () => {
                       </td>
                       <td className='py-5 px-3 sm:px-4 border-b'>
                         <a
-                          href={applicant.userId?.resume}
+                          href={`${applicant.userId?.resume.replace(
+                            "/upload/",
+                            "/upload/fl_attachment:resume/"
+                          )}`}
                           target='_blank'
                           rel='noopener noreferrer'
                           className='bg-blue-50 text-primary px-4 py-2 rounded-md flex items-center justify-start gap-2 text-base hover:bg-blue-100 transition-colors w-full'
@@ -159,7 +162,7 @@ const ViewApplications = () => {
                           <img
                             className='w-5 h-5'
                             src={assets.resume_download_icon}
-                            alt='Download'
+                            alt='View'
                           />
                         </a>
                       </td>
