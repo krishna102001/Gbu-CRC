@@ -1,6 +1,8 @@
 import Admin from "../models/Admin.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import Company from "../models/Company.js";
+import User from "../models/User.js";
 
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -63,4 +65,38 @@ export const adminSignup = async (req, res) => {
 
 export const validateAdminToken = async (req, res) => {
   res.json({ success: true, adminId: req.adminId });
+};
+
+export const listOfCompany = async (req, res) => {
+  try {
+    const listCompanyExist = await Company.find({}).select("name email");
+    if (!listCompanyExist) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Failed to fetch the company list" });
+    }
+    res.json({ success: true, listCompanyExist });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Failed to load the company list" });
+  }
+};
+
+export const listOfStudent = async (req, res) => {
+  try {
+    const listStudent = await User.find({}).select(
+      "registration name email image"
+    );
+    if (!listOfStudent) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Failed to fetch the student list" });
+    }
+    return res.json({ success: true, listStudent });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ json: false, message: "Failed to load the student list" });
+  }
 };
