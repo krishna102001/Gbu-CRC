@@ -9,6 +9,7 @@ import connectCloudinary from "./config/cloudinary.js";
 import JobRoutes from "./routes/jobRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import studentRoutes from "./routes/StudentRoutes.js";
+import adminRoutes from "./routes/AdminRoutes.js";
 import { defaultOtpCleanup } from "./utils/defaultOtpCleanup.js";
 // Initialize Express
 const app = express();
@@ -36,6 +37,7 @@ app.use("/api/company", companyRoutes);
 app.use("/api/jobs", JobRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/students", studentRoutes);
+app.use("/api/admin", adminRoutes);
 
 setInterval(() => defaultOtpCleanup(), 1000 * 60);
 
