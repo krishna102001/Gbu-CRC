@@ -9,7 +9,6 @@ import connectCloudinary from "./config/cloudinary.js";
 import JobRoutes from "./routes/jobRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import studentRoutes from "./routes/StudentRoutes.js";
-import { clerkMiddleware } from "@clerk/express";
 import { defaultOtpCleanup } from "./utils/defaultOtpCleanup.js";
 // Initialize Express
 const app = express();
@@ -21,7 +20,6 @@ await connectCloudinary();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(clerkMiddleware());
 
 // Routes
 app.get("/", (req, res) =>
