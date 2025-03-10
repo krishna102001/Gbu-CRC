@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Company from "../models/Company.js";
 import User from "../models/User.js";
+import JobApplication from "../models/JobApplication.js";
 
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -98,5 +99,35 @@ export const listOfStudent = async (req, res) => {
     return res
       .status(400)
       .json({ json: false, message: "Failed to load the student list" });
+  }
+};
+
+export const listOfStudentAppliedToCompany = async (req, res) => {
+  try {
+    const listStudent = await JobApplication.find({})
+      .select("status")
+      .populate({
+        path: "jobId",
+        select: "title",
+      })
+      .populate({
+        path: "userId",
+        select: "name registration",
+      })
+      .populate({
+        path: "companyId",
+        select: "name",
+      });
+    if (!listStudent) {
+      return res
+        .status(400)
+        .json({ success: true, message: "Failed to load the list" });
+    }
+    res.json({ success: true, listStudent });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: "Failed to load the student applied to company",
+    });
   }
 };

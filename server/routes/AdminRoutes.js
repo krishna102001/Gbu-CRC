@@ -4,6 +4,7 @@ import {
   adminSignup,
   listOfCompany,
   listOfStudent,
+  listOfStudentAppliedToCompany,
 } from "../controller/adminController.js";
 import adminMiddleWare from "../middleware/adminMiddleware.js";
 
@@ -20,5 +21,12 @@ router.get("/list-of-company", adminMiddleWare, listOfCompany);
 
 // List of Student is registered on job
 router.get("/list-of-student", adminMiddleWare, listOfStudent);
+
+//list of Student have applied for particular job
+router.get(
+  "/list-of-student-applied",
+  adminMiddleWare,
+  listOfStudentAppliedToCompany
+);
 
 export default router;
