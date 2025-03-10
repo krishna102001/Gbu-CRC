@@ -4,7 +4,7 @@ const adminMiddleWare = async (req, res, next) => {
   if (!token) {
     return res.status(401).json({ success: false, message: "Token Not Found" });
   }
-  console.log(token);
+  // console.log(token);
   if (!token.startsWith("Bearer ")) {
     return res
       .status(401)
