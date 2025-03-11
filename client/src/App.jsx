@@ -14,9 +14,12 @@ import "react-toastify/dist/ReactToastify.css";
 import StudentLogin from "./components/StudentLogin";
 import Applications from "./pages/Application";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./layout/Layout";
+import AdminLogin from "./components/Admin/AdminLogin";
+import AdminDashboard from "./components/Admin/AdminDashboard";
 
 const App = () => {
-  const { showRecruiterLogin, companyToken, showStudentLogin } =
+  const { showRecruiterLogin, companyToken, showStudentLogin, adminToken } =
     useContext(AppContext);
 
   return (
@@ -45,6 +48,25 @@ const App = () => {
             </>
           ) : null}
         </Route>
+        {adminToken ? (
+          <Route
+            path='/admin/dashboard'
+            element={
+              <Layout>
+                <AdminDashboard />
+              </Layout>
+            }
+          />
+        ) : (
+          <Route
+            path='/admin/login'
+            element={
+              <Layout>
+                <AdminLogin />
+              </Layout>
+            }
+          />
+        )}
       </Routes>
     </div>
   );
