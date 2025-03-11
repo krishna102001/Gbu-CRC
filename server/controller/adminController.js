@@ -28,9 +28,16 @@ export const adminLogin = async (req, res) => {
         expiresIn: "1d",
       }
     );
-    res
-      .status(200)
-      .json({ success: true, adminId: adminUser._id, adminToken: token });
+    res.status(200).json({
+      success: true,
+      adminUser: {
+        email: adminUser.email,
+        name: adminUser.name,
+        _id: adminUser._id,
+        phone: adminUser.phone,
+      },
+      adminToken: token,
+    });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ success: false, message: "Failed to Login" });
@@ -64,9 +71,15 @@ export const adminSignup = async (req, res) => {
   }
 };
 
-export const validateAdminToken = async (req, res) => {
-  res.json({ success: true, adminId: req.adminId });
-};
+// export const validateAdminToken = async (req, res) => {
+//   const _id = req.adminId;
+//   try {
+//     const data = await Admin.findOne({ _id });
+//     res.json({ success: true, data });
+//   } catch (error) {
+//     return res.json({ success: false, message: "Failed to validate token" });
+//   }
+// };
 
 export const listOfCompany = async (req, res) => {
   try {
