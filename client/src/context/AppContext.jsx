@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
 
 export const AppContext = createContext();
 
@@ -25,6 +26,34 @@ export const AppContextProvider = (props) => {
   const [userData, setUserData] = useState(null);
   const [userToken, setUserToken] = useState(null);
   const [userApplications, setUserApplications] = useState(null);
+
+  // edit should be made
+  const [adminToken, setAdminToken] = useState("");
+  const [adminData, setAdminData] = useState("");
+  const [isAdminLogged, setIsAdminLogged] = useState(false);
+  // const { isError, Admindata } = useQuery({
+  //   queryKey: ["validateToken"],
+  //   queryFn: async () => {
+  //     setAdminToken(localStorage.getItem("adminToken"));
+  //     const { adminDataFetch } = axios.get(
+  //       backendUrl + "/api/admin/validate-token",
+  //       {
+  //         headers: { Authorization: `Bearer ${adminToken}` },
+  //       }
+  //     );
+
+  //     const admindata = adminDataFetch.data;
+  //     return admindata;
+  //   },
+  // });
+  // useEffect(() => {
+  //   if (Admindata) {
+  //     const { name, email, userId, profileImage, phone } = Admindata;
+  //     setAdminData({ name, email, userId, profileImage, phone });
+  //   }
+  // }, [Admindata]);
+
+  // edit end here
 
   // Function to Fetch Jobs data
   const fetchJobs = async () => {
@@ -132,6 +161,36 @@ export const AppContextProvider = (props) => {
     }
   }, []);
 
+  // useEffect(() => {
+  //   if (adminToken) {
+  //     fetchAdminData();
+  //   }
+  // }, [adminToken]);
+
+  useEffect(() => {
+    if (adminData) {
+      const storedAdminData = JSON.stringify(adminData);
+      localStorage.setItem("adminData", storedAdminData);
+      const storedIsAdminLogged = JSON.stringify(isAdminLogged);
+      localStorage.setItem("isAdminLogged", storedIsAdminLogged);
+    }
+  }, [adminData]);
+
+  useEffect(() => {
+    const storedAdminData = localStorage.getItem("adminData");
+    const storedIsAdminLogged = localStorage.getItem("isAdminLogged");
+    const storedAdminToken = localStorage.getItem("adminToken");
+    if (storedAdminToken) {
+      setAdminToken(storedAdminToken);
+    }
+    if (storedIsAdminLogged) {
+      setIsAdminLogged(JSON.parse(storedIsAdminLogged));
+    }
+    if (storedAdminData) {
+      setAdminData(JSON.parse(storedAdminData));
+    }
+  }, []);
+
   useEffect(() => {
     if (userToken) {
       fetchUserData();
@@ -163,6 +222,12 @@ export const AppContextProvider = (props) => {
     fetchUserApplications,
     setUserToken,
     userToken,
+    adminData,
+    adminToken,
+    setAdminToken,
+    setAdminData,
+    isAdminLogged,
+    setIsAdminLogged,
   };
 
   return (
