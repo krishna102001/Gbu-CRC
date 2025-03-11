@@ -5,6 +5,7 @@ import {
   listOfCompany,
   listOfStudent,
   listOfStudentAppliedToCompany,
+  // validateAdminToken,
 } from "../controller/adminController.js";
 import adminMiddleWare from "../middleware/adminMiddleware.js";
 
@@ -15,6 +16,9 @@ router.post("/login", adminLogin);
 
 //signup routes
 router.post("/signup", adminSignup);
+
+//validate-token
+// router.get("/validate-token", adminMiddleWare, validateAdminToken);
 
 // List of Company is registered
 router.get("/list-of-company", adminMiddleWare, listOfCompany);
