@@ -1,7 +1,9 @@
 import express from "express";
 import {
+  addPlacementRecord,
   adminLogin,
   adminSignup,
+  getPlacementRecord,
   listOfCompany,
   listOfStudent,
   listOfStudentAppliedToCompany,
@@ -32,5 +34,11 @@ router.get(
   adminMiddleWare,
   listOfStudentAppliedToCompany
 );
+
+// add placement record
+router.post("/add-placement-record", adminMiddleWare, addPlacementRecord);
+
+//get the placement record
+router.get("/get-placement-record", getPlacementRecord);
 
 export default router;

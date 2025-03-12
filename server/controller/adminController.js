@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 import Company from "../models/Company.js";
 import User from "../models/User.js";
 import JobApplication from "../models/JobApplication.js";
+import PlacementRecord from "../models/PlacementRecord.js";
+import { placementRecordSchema } from "../validation/placementRecordSchema.js";
 
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -142,5 +144,60 @@ export const listOfStudentAppliedToCompany = async (req, res) => {
       success: false,
       message: "Failed to load the student applied to company",
     });
+  }
+};
+
+export const addPlacementRecord = async (req, res) => {
+  const {
+    session,
+    numberOfCompanies,
+    numberOfStudentsApplied,
+    numberOfStudentsPlaced,
+  } = req.body;
+
+  try {
+    const placementRecordValidation = placementRecordSchema.parse({
+      session,
+      numberOfCompanies,
+      numberOfStudentsApplied,
+      numberOfStudentsPlaced,
+    });
+    // console.log(placementRecordValidation.session);
+    const placementRecord = await PlacementRecord.create({
+      session: placementRecordValidation.session,
+      numberOfCompanies: placementRecordValidation.numberOfCompanies,
+      numberOfStudentsApplied:
+        placementRecordValidation.numberOfStudentsApplied,
+      numberOfStudentsPlaced: placementRecordValidation.numberOfStudentsPlaced,
+    });
+    if (!placementRecord) {
+      return res.status(400).json({
+        success: false,
+        message: "Failed to Add the Placement Record",
+      });
+    }
+    res.json({ success: true, message: "Placement Record added successfully" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(400)
+      .json({ success: false, message: "Failed to Add the Record" });
+  }
+};
+
+export const getPlacementRecord = async (req, res) => {
+  try {
+    const placementRecord = await PlacementRecord.find({});
+    if (!placementRecord) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Failed to fetch the record" });
+    }
+    res.json({ success: true, placementRecord });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(400)
+      .json({ success: false, message: "Failed to load the placement Record" });
   }
 };
