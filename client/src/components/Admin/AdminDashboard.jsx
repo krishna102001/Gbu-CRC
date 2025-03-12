@@ -24,7 +24,7 @@ const AdminDashboard = () => {
                   "bg-blue-200 border-r-4 border-primary p-4 rounded-xl text-primary transition duration-200 ease-in-out"
                 }`
               }
-              to={"/dashboard/add-job"}
+              to={"/admin/dashboard/list-of-company"}
             >
               <img className='min-w-4' src={assets.add_icon} alt='' />
               <p className='max-sm:hidden'>List of company</p>
@@ -37,7 +37,7 @@ const AdminDashboard = () => {
                   "bg-blue-200 border-r-4 border-primary p-4 rounded-xl text-primary transition duration-200 ease-in-out"
                 }`
               }
-              to={"/dashboard/manage-job"}
+              to={"/admin/dashboard/list-of-student-registered"}
             >
               <img className='min-w-4' src={assets.home_icon} alt='' />
               <p className='max-sm:hidden'>Registered Student </p>
@@ -50,7 +50,7 @@ const AdminDashboard = () => {
                   "bg-blue-200 border-r-4 border-primary p-4 rounded-xl text-primary transition duration-200 ease-in-out"
                 }`
               }
-              to={"/dashboard/view-applications"}
+              to={"/admin/dashboard/list-of-student-applied-for-company"}
             >
               <img className='min-w-4' src={assets.person_tick_icon} alt='' />
               <p className='max-sm:hidden'>Student Applied</p>

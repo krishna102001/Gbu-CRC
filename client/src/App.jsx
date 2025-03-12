@@ -17,6 +17,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./layout/Layout";
 import AdminLogin from "./components/Admin/AdminLogin";
 import AdminDashboard from "./components/Admin/AdminDashboard";
+import ListOfCompany from "./components/Admin/ListOfCompany";
+import ListOfStudent from "./components/Admin/ListOfStudent";
+import ListOfStudentApplied from "./components/Admin/ListOfStudentApplied";
 
 const App = () => {
   const { showRecruiterLogin, companyToken, showStudentLogin, adminToken } =
@@ -49,14 +52,26 @@ const App = () => {
           ) : null}
         </Route>
         {adminToken ? (
-          <Route
-            path='/admin/dashboard'
-            element={
-              <Layout>
-                <AdminDashboard />
-              </Layout>
-            }
-          />
+          <>
+            <Route
+              path='/admin/dashboard'
+              element={
+                <Layout>
+                  <AdminDashboard />
+                </Layout>
+              }
+            >
+              <Route path='list-of-company' element={<ListOfCompany />} />
+              <Route
+                path='list-of-student-registered'
+                element={<ListOfStudent />}
+              />
+              <Route
+                path='list-of-student-applied-for-company'
+                element={<ListOfStudentApplied />}
+              />
+            </Route>
+          </>
         ) : (
           <Route
             path='/admin/login'
