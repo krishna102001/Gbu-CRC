@@ -201,3 +201,56 @@ export const getPlacementRecord = async (req, res) => {
       .json({ success: false, message: "Failed to load the placement Record" });
   }
 };
+
+export const editPlacementRecord = async (req, res) => {
+  const {
+    session,
+    numberOfCompanies,
+    numberOfStudentsApplied,
+    numberOfStudentsPlaced,
+  } = req.body;
+  const id = req.params.id;
+  try {
+    const placementRecordValidation = placementRecordSchema.parse({
+      session,
+      numberOfCompanies,
+      numberOfStudentsApplied,
+      numberOfStudentsPlaced,
+    });
+    const data = await PlacementRecord.findByIdAndUpdate(id, {
+      session: placementRecordValidation.session,
+      numberOfCompanies: placementRecordValidation.numberOfCompanies,
+      numberOfStudentsApplied:
+        placementRecordValidation.numberOfStudentsApplied,
+      numberOfStudentsPlaced: placementRecordValidation.numberOfStudentsPlaced,
+    });
+    if (!data) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Failed to Update" });
+    }
+    res.json({ success: true, message: "Successfully Updated" });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(400)
+      .json({ success: false, message: "Failed to Edit the Record" });
+  }
+};
+
+export const deletePlacementRecord = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const data = await PlacementRecord.findOneAndDelete({ _id: id });
+    if (!data) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Failed to delete" });
+    }
+    res.json({ success: true, message: "Succesfully Deleted" });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Failed to delete the record" });
+  }
+};
