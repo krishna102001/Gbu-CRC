@@ -9,6 +9,19 @@ GBU CRC Portal is an online job portal that connects students and recruiters, ma
 - To avoid repetitive form-filling for students.
 - To simplify data management for the university.
 
+## Tech Stack
+
+- React.js(Frontend)
+- Tailwindcss(Styling)
+- Chart.js(Graph Data)
+- Quills(Rich Text Editor)
+- Express.js(Backend)
+- Json Web Token(Authentication)
+- MongoDB(Database)
+- Cloudinary(Image/Resume Storage)
+- Zod(Validation)
+- Nodemailer(Mail Sending)
+
 ## Project Setup
 
 For frontend:
@@ -52,11 +65,11 @@ VITE_BACKEND_URL = http://localhost:3000
 For Backend:
 
 ```bash
-JWT_SECRET
-MONGODB_URI
-CLOUDINARY_NAME
-CLOUDINARY_API_KEY
-CLOUDINARY_SECRET_KEY
-EMAIL_USER
-EMAIL_PASS
+JWT_SECRET =
+MONGODB_URI =
+CLOUDINARY_NAME =
+CLOUDINARY_API_KEY =
+CLOUDINARY_SECRET_KEY =
+EMAIL_USER =
+EMAIL_PASS =
 ```
