@@ -46,9 +46,12 @@ const AdminNavbar = () => {
               <p>Corporate Relations Cell</p>
             </div>
           </div>
-          <div onClick={() => navigate("/")}>
-            <h1 className='text-blue-600 cursor-pointer'>Home</h1>
-          </div>
+          {!adminData && (
+            <div onClick={() => navigate("/")}>
+              <h1 className='text-blue-600 cursor-pointer'>Home</h1>
+            </div>
+          )}
+
           {adminData && (
             <div className='flex items-center gap-3 font-primary text-[14px]'>
               <p className='max-sm:hidden'>Hi, {adminData.name}</p>
