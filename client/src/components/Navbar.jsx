@@ -1,15 +1,10 @@
 import { useContext } from "react";
-
-// import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import logo from "../assets/gbu_logo.png";
 import { motion } from "framer-motion";
 
 const Navbar = () => {
-  // const { openSignIn } = useClerk();
-  // const { user } = useUser();
-
   const navigate = useNavigate();
 
   const {
@@ -87,6 +82,12 @@ const Navbar = () => {
             </div>
           ) : (
             <div className='flex gap-4 max:sm:text-xs'>
+              <div
+                className='flex items-center text-gray-600 hover:text-primary sm:text-lg transition duration-300 ease-in-out cursor-pointer'
+                onClick={() => navigate("/placement-records")}
+              >
+                <h1>Placement Records</h1>
+              </div>
               <button
                 onClick={(e) => setShowRecruiterLogin(true)}
                 className='text-gray-600 text-[10px] sm:text-lg sm:pr-2 hover:text-primary transition duration-300 ease-in-out'
