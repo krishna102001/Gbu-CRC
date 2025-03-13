@@ -20,6 +20,9 @@ import AdminDashboard from "./components/Admin/AdminDashboard";
 import ListOfCompany from "./components/Admin/ListOfCompany";
 import ListOfStudent from "./components/Admin/ListOfStudent";
 import ListOfStudentApplied from "./components/Admin/ListOfStudentApplied";
+import AddPlacementRecord from "./components/Admin/AddPlacementRecord";
+import PlacementRecordLayout from "./components/PlacementRecordLayout";
+import PlacementRecords from "./components/PlacementRecords";
 
 const App = () => {
   const { showRecruiterLogin, companyToken, showStudentLogin, adminToken } =
@@ -70,6 +73,10 @@ const App = () => {
                 path='list-of-student-applied-for-company'
                 element={<ListOfStudentApplied />}
               />
+              <Route
+                path='add-placement-record'
+                element={<AddPlacementRecord />}
+              />
             </Route>
           </>
         ) : (
@@ -82,6 +89,14 @@ const App = () => {
             }
           />
         )}
+        <Route
+          path='/placement-records'
+          element={
+            <PlacementRecordLayout>
+              <PlacementRecords />
+            </PlacementRecordLayout>
+          }
+        />
       </Routes>
     </div>
   );
