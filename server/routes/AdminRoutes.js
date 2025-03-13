@@ -1,7 +1,11 @@
 import express from "express";
 import {
+  addPlacementRecord,
   adminLogin,
   adminSignup,
+  deletePlacementRecord,
+  editPlacementRecord,
+  getPlacementRecord,
   listOfCompany,
   listOfStudent,
   listOfStudentAppliedToCompany,
@@ -31,6 +35,22 @@ router.get(
   "/list-of-student-applied",
   adminMiddleWare,
   listOfStudentAppliedToCompany
+);
+
+// add placement record
+router.post("/add-placement-record", adminMiddleWare, addPlacementRecord);
+
+//get the placement record
+router.get("/get-placement-record", getPlacementRecord);
+
+//edit the placement record
+router.put("/edit-placement-record/:id", adminMiddleWare, editPlacementRecord);
+
+//delete the placement record
+router.delete(
+  "/delete-placement-record/:id",
+  adminMiddleWare,
+  deletePlacementRecord
 );
 
 export default router;
