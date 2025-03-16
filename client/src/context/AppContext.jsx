@@ -31,29 +31,6 @@ export const AppContextProvider = (props) => {
   const [adminToken, setAdminToken] = useState("");
   const [adminData, setAdminData] = useState("");
   const [isAdminLogged, setIsAdminLogged] = useState(false);
-  // const { isError, Admindata } = useQuery({
-  //   queryKey: ["validateToken"],
-  //   queryFn: async () => {
-  //     setAdminToken(localStorage.getItem("adminToken"));
-  //     const { adminDataFetch } = axios.get(
-  //       backendUrl + "/api/admin/validate-token",
-  //       {
-  //         headers: { Authorization: `Bearer ${adminToken}` },
-  //       }
-  //     );
-
-  //     const admindata = adminDataFetch.data;
-  //     return admindata;
-  //   },
-  // });
-  // useEffect(() => {
-  //   if (Admindata) {
-  //     const { name, email, userId, profileImage, phone } = Admindata;
-  //     setAdminData({ name, email, userId, profileImage, phone });
-  //   }
-  // }, [Admindata]);
-
-  // edit end here
 
   // Function to Fetch Jobs data
   const fetchJobs = async () => {
