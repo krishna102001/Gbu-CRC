@@ -11,12 +11,21 @@ import userRoutes from "./routes/userRoutes.js";
 import studentRoutes from "./routes/StudentRoutes.js";
 import adminRoutes from "./routes/AdminRoutes.js";
 import { defaultOtpCleanup } from "./utils/defaultOtpCleanup.js";
+import path from "path";
+import { fileURLToPath } from "url";
+
+//resolving dirname for es module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Initialize Express
 const app = express();
 
 // Connect to MongoDB
 await connectDB();
 await connectCloudinary();
+
+app.use(express.static(path.join(__dirname, "../client/dist")));
 
 // Middleware
 app.use(cors());
@@ -40,6 +49,14 @@ app.use("/api/students", studentRoutes);
 app.use("/api/admin", adminRoutes);
 
 setInterval(() => defaultOtpCleanup(), 1000 * 60);
+
+// static file should be written below other wise it will not work on any get request
+// if you define at the top then it catches all GET requests, including /api/* routes — meaning any GET request to an API endpoint is
+// intercepted before hitting your API route handlers. That's why GET requests are not reaching their actual route handlers, and you get
+// the frontend index.html instead of API data.
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+});
 
 // Start the server
 const port = process.env.PORT || 3000;
