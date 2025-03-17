@@ -32,9 +32,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.get("/", (req, res) =>
-  res.send("Welcome to GCPP(Gbu Campus Placement Platform)")
-);
+// app.get("/", (req, res) =>
+//   res.send("Welcome to GCPP(Gbu Campus Placement Platform)")
+// );
 
 Sentry.setupExpressErrorHandler(app);
 
