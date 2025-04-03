@@ -1,4 +1,3 @@
-import Admin from "../models/Admin.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Company from "../models/Company.js";
@@ -6,82 +5,6 @@ import User from "../models/User.js";
 import JobApplication from "../models/JobApplication.js";
 import PlacementRecord from "../models/PlacementRecord.js";
 import { placementRecordSchema } from "../validation/placementRecordSchema.js";
-
-export const adminLogin = async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const adminUser = await Admin.findOne({ email });
-    if (!adminUser) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid Credentials" });
-    }
-    const isMatchPassword = await bcrypt.compare(password, adminUser.password);
-    if (!isMatchPassword) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Email/Password is Invalid" });
-    }
-    const token = await jwt.sign(
-      { adminId: adminUser.id },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1d",
-      }
-    );
-    res.status(200).json({
-      success: true,
-      adminUser: {
-        email: adminUser.email,
-        name: adminUser.name,
-        _id: adminUser._id,
-        phone: adminUser.phone,
-      },
-      adminToken: token,
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ success: false, message: "Failed to Login" });
-  }
-};
-
-export const adminSignup = async (req, res) => {
-  const { email, password, name, phone } = req.body;
-
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    if (
-      !(await Admin.create({
-        email,
-        password: hashedPassword,
-        name: name,
-        phone: phone,
-      }))
-    ) {
-      return res.json({
-        success: false,
-        message: "Failed to save the admin data",
-      });
-    }
-    res.json({ success: true, message: "Account created successfully" });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(400)
-      .json({ success: false, message: "Failed to Signup" });
-  }
-};
-
-// export const validateAdminToken = async (req, res) => {
-//   const _id = req.adminId;
-//   try {
-//     const data = await Admin.findOne({ _id });
-//     res.json({ success: true, data });
-//   } catch (error) {
-//     return res.json({ success: false, message: "Failed to validate token" });
-//   }
-// };
 
 export const listOfCompany = async (req, res) => {
   try {
