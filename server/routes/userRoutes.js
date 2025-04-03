@@ -16,6 +16,10 @@ import roleMiddleWare from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
+// 👍🏻 - under review till now working
+// ✅ - done might break then have to visit
+// ❌ - didn't tested out yet
+
 // Register Student 👍🏻
 
 router.post("/register", upload.single("image"), registerUser);
