@@ -1,8 +1,6 @@
 import express from "express";
 import {
   addPlacementRecord,
-  adminLogin,
-  adminSignup,
   deletePlacementRecord,
   editPlacementRecord,
   getPlacementRecord,
@@ -11,45 +9,62 @@ import {
   listOfStudentAppliedToCompany,
   // validateAdminToken,
 } from "../controller/adminController.js";
-import adminMiddleWare from "../middleware/adminMiddleware.js";
+import authMiddleWare from "../middleware/authMiddleware.js";
+import roleMiddleWare from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-// login routes
-router.post("/login", adminLogin);
-
-//signup routes
-router.post("/signup", adminSignup);
-
 //validate-token
-// router.get("/validate-token", adminMiddleWare, validateAdminToken);
+// router.get("/validate-token", authMiddleWare, validateAdminToken);
 
 // List of Company is registered
-router.get("/list-of-company", adminMiddleWare, listOfCompany);
+router.get(
+  "/list-of-company",
+  authMiddleWare,
+  roleMiddleWare("admin", "view"),
+  listOfCompany
+);
 
 // List of Student is registered on job
-router.get("/list-of-student", adminMiddleWare, listOfStudent);
+router.get(
+  "/list-of-student",
+  authMiddleWare,
+  roleMiddleWare("admin", "view"),
+  listOfStudent
+);
 
 //list of Student have applied for particular job
 router.get(
   "/list-of-student-applied",
-  adminMiddleWare,
+  authMiddleWare,
+  roleMiddleWare("admin", "view"),
   listOfStudentAppliedToCompany
 );
 
 // add placement record
-router.post("/add-placement-record", adminMiddleWare, addPlacementRecord);
+router.post(
+  "/add-placement-record",
+  authMiddleWare,
+  roleMiddleWare("admin", "add"),
+  addPlacementRecord
+);
 
 //get the placement record
 router.get("/get-placement-record", getPlacementRecord);
 
 //edit the placement record
-router.put("/edit-placement-record/:id", adminMiddleWare, editPlacementRecord);
+router.put(
+  "/edit-placement-record/:id",
+  authMiddleWare,
+  roleMiddleWare("admin", "update"),
+  editPlacementRecord
+);
 
 //delete the placement record
 router.delete(
   "/delete-placement-record/:id",
-  adminMiddleWare,
+  authMiddleWare,
+  roleMiddleWare("admin", "delete"),
   deletePlacementRecord
 );
 

@@ -1,8 +1,15 @@
 import express from "express";
 import { addStudent } from "../controller/studentController.js";
+import authMiddleWare from "../middleware/authMiddleware.js";
+import roleMiddleWare from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-router.post("/add-student", addStudent);
+router.post(
+  "/add-student",
+  authMiddleWare,
+  roleMiddleWare("admin", "add"),
+  addStudent
+);
 
 export default router;
