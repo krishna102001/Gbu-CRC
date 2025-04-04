@@ -17,7 +17,7 @@ const router = express.Router();
 //validate-token
 // router.get("/validate-token", authMiddleWare, validateAdminToken);
 
-// List of Company is registered
+// List of Company is registered ✅
 router.get(
   "/list-of-company",
   authMiddleWare,
@@ -25,7 +25,7 @@ router.get(
   listOfCompany
 );
 
-// List of Student is registered on job
+// List of Student is registered on job ✅
 router.get(
   "/list-of-student",
   authMiddleWare,
@@ -33,7 +33,7 @@ router.get(
   listOfStudent
 );
 
-//list of Student have applied for particular job
+//list of Student have applied for particular job ✅
 router.get(
   "/list-of-student-applied",
   authMiddleWare,
@@ -41,7 +41,7 @@ router.get(
   listOfStudentAppliedToCompany
 );
 
-// add placement record
+// add placement record ✅
 router.post(
   "/add-placement-record",
   authMiddleWare,
@@ -49,10 +49,10 @@ router.post(
   addPlacementRecord
 );
 
-//get the placement record
+//get the placement record ✅
 router.get("/get-placement-record", getPlacementRecord);
 
-//edit the placement record
+//edit the placement record ✅
 router.put(
   "/edit-placement-record/:id",
   authMiddleWare,
@@ -60,7 +60,7 @@ router.put(
   editPlacementRecord
 );
 
-//delete the placement record
+//delete the placement record ✅
 router.delete(
   "/delete-placement-record/:id",
   authMiddleWare,

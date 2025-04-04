@@ -95,14 +95,7 @@ export const loginUser = async (req, res) => {
 
 // Get user Data ✅
 export const getUserData = async (req, res) => {
-  const authorization = req.headers.authorization;
-  let token = "";
-  if (!authorization.startsWith("Bearer ")) {
-    return res.status(400).json({ success: false, message: "Not Authorized" });
-  }
-  token = authorization.substring(7, authorization.length);
-  let userToken = jwt.decode(token);
-  let userId = userToken.id;
+  let userId = req.userId;
   console.log(userId);
   console.log("User ID from request:", userId); // Log the user ID
 
@@ -120,7 +113,7 @@ export const getUserData = async (req, res) => {
   }
 };
 
-// Apply For a Job ❌
+// Apply For a Job ✅
 export const applyForJob = async (req, res) => {
   const { jobId } = req.body;
   const userId = req.userId;
@@ -143,10 +136,14 @@ export const applyForJob = async (req, res) => {
       return res.json({ success: false, message: "Job not found" });
     }
 
+    const resume = await Resume.findOne({ userId });
+    const resumeId = resume._id;
+
     await JobApplication.create({
       companyId: jobData.companyId,
       userId,
       jobId,
+      resumeId,
       date: Date.now(),
     });
 

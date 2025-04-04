@@ -5,6 +5,7 @@ import roleMiddleWare from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
+// student data will be added ✅
 router.post(
   "/add-student",
   authMiddleWare,

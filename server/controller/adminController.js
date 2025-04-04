@@ -6,6 +6,7 @@ import JobApplication from "../models/JobApplication.js";
 import PlacementRecord from "../models/PlacementRecord.js";
 import { placementRecordSchema } from "../validation/placementRecordSchema.js";
 
+// List of Company is registered ✅
 export const listOfCompany = async (req, res) => {
   try {
     const listCompanyExist = await Company.find({}).select("name email");
@@ -22,9 +23,10 @@ export const listOfCompany = async (req, res) => {
   }
 };
 
+// List of Student is registered on job ✅
 export const listOfStudent = async (req, res) => {
   try {
-    const listStudent = await User.find({}).select(
+    const listStudent = await User.find({ role: "student" }).select(
       "registration name email image"
     );
     if (!listOfStudent) {
@@ -40,6 +42,7 @@ export const listOfStudent = async (req, res) => {
   }
 };
 
+//list of Student have applied for particular job ✅
 export const listOfStudentAppliedToCompany = async (req, res) => {
   try {
     const listStudent = await JobApplication.find({})
@@ -70,6 +73,7 @@ export const listOfStudentAppliedToCompany = async (req, res) => {
   }
 };
 
+// add placement record ✅
 export const addPlacementRecord = async (req, res) => {
   const {
     session,
@@ -108,6 +112,7 @@ export const addPlacementRecord = async (req, res) => {
   }
 };
 
+//get the placement record ✅
 export const getPlacementRecord = async (req, res) => {
   try {
     const placementRecord = await PlacementRecord.find({});
@@ -125,6 +130,7 @@ export const getPlacementRecord = async (req, res) => {
   }
 };
 
+//edit the placement record ✅
 export const editPlacementRecord = async (req, res) => {
   const {
     session,
@@ -161,6 +167,7 @@ export const editPlacementRecord = async (req, res) => {
   }
 };
 
+//delete the placement record ✅
 export const deletePlacementRecord = async (req, res) => {
   const id = req.params.id;
   try {

@@ -20,7 +20,7 @@ const router = express.Router();
 // ✅ - done might break then have to visit
 // ❌ - didn't tested out yet
 
-// Register Student 👍🏻
+// Register Student ✅
 
 router.post("/register", upload.single("image"), registerUser);
 
@@ -30,7 +30,7 @@ router.post("/login", loginUser);
 
 // Get User Data ✅
 
-router.get("/user", getUserData);
+router.get("/user", authMiddleWare, getUserData);
 
 // Send OTP ✅
 router.post("/send-otp", sendOtp);
@@ -41,12 +41,12 @@ router.post("/verify-otp", verifyOtp);
 //Check STUDENT ✅
 router.post("/check-student", checkStudent);
 
-// Apply for a Job ❌
+// Apply for a Job ✅
 
 router.post(
   "/apply",
   authMiddleWare,
-  roleMiddleWare("student", "add"),
+  roleMiddleWare("student", "update"),
   applyForJob
 );
 

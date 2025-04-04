@@ -5,9 +5,10 @@ import {
   getCompanyData,
   getCompanyJobApplicants,
   getCompanyPostedJobs,
-  loginCompany,
+  loginHR,
   postJob,
   registerCompany,
+  registerHR,
 } from "../controller/comapanyController.js";
 import upload from "../config/multer.js";
 import authMiddleWare from "../middleware/authMiddleware.js";
@@ -15,19 +16,28 @@ import roleMiddleWare from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-// Register a company
-router.post("/register", upload.single("image"), registerCompany);
+// Register a HR ✅
+router.post("/register", upload.single("image"), registerHR);
 
-// Company Login
-router.post("/login", loginCompany);
+// Login a HR ✅
+router.post("/login", loginHR);
 
-// Get company Data
+// Register Company ✅
+router.post(
+  "/register/company",
+  upload.single("image"),
+  authMiddleWare,
+  roleMiddleWare("hr", "add"),
+  registerCompany
+);
+
+// Get company Data ✅
 router.get("/company", authMiddleWare, getCompanyData);
 
-// Post a job
+// Post a job ✅
 router.post("/post-job", authMiddleWare, roleMiddleWare("hr", "add"), postJob);
 
-// Get Applicants Data
+// Get Applicants Data ✅
 router.get(
   "/applicants",
   authMiddleWare,
@@ -35,7 +45,7 @@ router.get(
   getCompanyJobApplicants
 );
 
-// Get company Job List
+// Get company Job List ✅
 router.get(
   "/list-jobs",
   authMiddleWare,
@@ -43,7 +53,7 @@ router.get(
   getCompanyPostedJobs
 );
 
-// Change Applications Status
+// Change Applications Status ✅
 router.post(
   "/change-status",
   authMiddleWare,
@@ -51,7 +61,7 @@ router.post(
   ChangeJobApplicationStatus
 );
 
-// Change Applications Visiblity
+// Change Applications Visiblity ✅
 router.post(
   "/change-visibility",
   authMiddleWare,
