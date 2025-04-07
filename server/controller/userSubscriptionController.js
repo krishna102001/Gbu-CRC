@@ -18,3 +18,15 @@ export const emailSubscribe = async (req, res) => {
   }
   console.log(email);
 };
+
+export const emailUnSubscribe = async (req, res) => {
+  const { email } = req.body;
+  try {
+    await Subscription.deleteOne({ email });
+    res
+      .status(200)
+      .json({ success: true, message: "Successfully UnSubscribed" });
+  } catch (error) {
+    res.status(400).json({ success: false, message: "Failed Try again" });
+  }
+};
