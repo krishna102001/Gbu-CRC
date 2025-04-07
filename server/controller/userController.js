@@ -10,6 +10,7 @@ import { generateOtp } from "../utils/generateOtp.js";
 import { sendMail } from "../utils/sendMail.js";
 import Otp from "../models/Otp.js";
 import Resume from "../models/Resume.js";
+import Company from "../models/Company.js";
 
 // Register User Data 👍🏻
 export const registerUser = async (req, res) => {
@@ -71,6 +72,10 @@ export const loginUser = async (req, res) => {
         .status(400)
         .json({ success: false, message: "User Not Found" });
     }
+    let company;
+    if (user.role === "hr") {
+      company = await Company.findOne({ userId: user._id });
+    }
     if (await bcrypt.compare(password, user.password)) {
       res.json({
         success: true,
@@ -80,6 +85,7 @@ export const loginUser = async (req, res) => {
           name: user.name,
           image: user.image,
           role: user.role,
+          company: company,
         },
         token: generateToken(user._id, user.role),
       });

@@ -56,6 +56,7 @@ export const registerHR = async (req, res) => {
 export const registerCompany = async (req, res) => {
   const { name, email, phone } = req.body;
   const imageFile = req.file;
+  console.log(name, email, phone, imageFile);
   if (!name || !email || !phone || !imageFile) {
     return res
       .status(403)

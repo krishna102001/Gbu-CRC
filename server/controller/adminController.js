@@ -9,7 +9,9 @@ import { placementRecordSchema } from "../validation/placementRecordSchema.js";
 // List of Company is registered ✅
 export const listOfCompany = async (req, res) => {
   try {
-    const listCompanyExist = await Company.find({}).select("name email");
+    const listCompanyExist = await Company.find({}).select(
+      "name email phone image"
+    );
     if (!listCompanyExist) {
       return res
         .status(400)
@@ -59,6 +61,7 @@ export const listOfStudentAppliedToCompany = async (req, res) => {
         path: "companyId",
         select: "name",
       });
+
     if (!listStudent) {
       return res
         .status(400)
