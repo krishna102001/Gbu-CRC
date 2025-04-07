@@ -14,7 +14,7 @@ const AdminNavbar = () => {
     localStorage.removeItem("adminData");
     localStorage.removeItem("adminToken");
     localStorage.removeItem("isAdminLogged");
-    navigate("/admin/login");
+    navigate("/");
   };
 
   return (

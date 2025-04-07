@@ -7,13 +7,8 @@ import { motion } from "framer-motion";
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const {
-    setShowRecruiterLogin,
-    setShowStudentLogin,
-    userData,
-    setUserToken,
-    setUserData,
-  } = useContext(AppContext);
+  const { setShowUserLogin, userData, setUserToken, setUserData } =
+    useContext(AppContext);
   const user = userData;
 
   const logout = () => {
@@ -89,13 +84,7 @@ const Navbar = () => {
                 <h1>Placement Records</h1>
               </div>
               <button
-                onClick={(e) => setShowRecruiterLogin(true)}
-                className='text-gray-600 text-[10px] sm:text-lg sm:pr-2 hover:text-primary transition duration-300 ease-in-out'
-              >
-                Recruiter Login
-              </button>
-              <button
-                onClick={(e) => setShowStudentLogin(true)}
+                onClick={(e) => setShowUserLogin(true)}
                 className='bg-primary text-white px-4 sm:px-8 py-2 rounded-xl font-primary text-sm sm:text-2xl hover:bg-slate-600 transition duration-300 ease-in-out transform hover:-translate-y-[3px]'
               >
                 Login
