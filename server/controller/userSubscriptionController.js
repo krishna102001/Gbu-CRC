@@ -6,7 +6,7 @@ const content = {
   title: "You're In!",
   message: `Congratulations! You have successfully subscribed to our mailing list. You'll now receive updates, newsletters, and exciting news directly in your inbox.`,
   buttonText: "Click here for unsubscribe",
-  buttonUrl: "http://localhost:3000/api/subscriptions/unsubscribe",
+  buttonUrl: "https://gbu-crc.onrender.com//api/subscriptions/unsubscribe",
 };
 
 export const emailSubscribe = async (req, res) => {
@@ -26,7 +26,7 @@ export const emailSubscribe = async (req, res) => {
   } catch (error) {
     res.status(400).json({ success: false, message: "Failed Try again" });
   }
-  console.log(email);
+  //   console.log(email);
 };
 
 export const emailUnSubscribe = async (req, res) => {
