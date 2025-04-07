@@ -1,21 +1,19 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import ApplyJob from "./pages/ApplyJob";
-import RecruiterLogin from "./components/RecruiterLogin";
 import { AppContext } from "./context/AppContext";
 import Dashboard from "./pages/Dashboard";
 import AddJob from "./pages/AddJob";
 import ManageJobs from "./pages/ManageJobs";
 import ViewApplications from "./pages/ViewApplications";
 import "quill/dist/quill.snow.css";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import StudentLogin from "./components/StudentLogin";
+import UserLogin from "./components/UserLogin";
 import Applications from "./pages/Application";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./layout/Layout";
-import AdminLogin from "./components/Admin/AdminLogin";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import ListOfCompany from "./components/Admin/ListOfCompany";
 import ListOfStudent from "./components/Admin/ListOfStudent";
@@ -23,20 +21,18 @@ import ListOfStudentApplied from "./components/Admin/ListOfStudentApplied";
 import AddPlacementRecord from "./components/Admin/AddPlacementRecord";
 import PlacementRecordLayout from "./components/PlacementRecordLayout";
 import PlacementRecords from "./components/PlacementRecords";
+import CompanyForm from "./components/CompanyForm";
 
 const App = () => {
-  const { showRecruiterLogin, companyToken, showStudentLogin, adminToken } =
-    useContext(AppContext);
+  const { companyToken, showUserLogin, adminToken } = useContext(AppContext);
 
   return (
     <div>
-      {showRecruiterLogin && <RecruiterLogin />}
-      {showStudentLogin && <StudentLogin />}
+      {showUserLogin && <UserLogin />}
       <ToastContainer />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/apply-job/:id' element={<ApplyJob />} />
-        <Route path='/recruiter-login' element={<RecruiterLogin />} />
         <Route
           path='/applications'
           element={
@@ -45,6 +41,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route path='/create-company' element={<CompanyForm />} />
         <Route path='/dashboard' element={<Dashboard />}>
           {companyToken ? (
             <>
@@ -54,7 +51,7 @@ const App = () => {
             </>
           ) : null}
         </Route>
-        {adminToken ? (
+        {adminToken && (
           <>
             <Route
               path='/admin/dashboard'
@@ -79,15 +76,6 @@ const App = () => {
               />
             </Route>
           </>
-        ) : (
-          <Route
-            path='/admin/login'
-            element={
-              <Layout>
-                <AdminLogin />
-              </Layout>
-            }
-          />
         )}
         <Route
           path='/placement-records'
