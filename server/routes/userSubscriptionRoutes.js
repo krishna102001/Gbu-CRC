@@ -1,8 +1,13 @@
 import express from "express";
-import { emailSubscribe } from "../controller/userSubscriptionController.js";
+import {
+  emailSubscribe,
+  emailUnSubscribe,
+} from "../controller/userSubscriptionController.js";
 
 const router = express.Router();
 
 router.post("/subscribe", emailSubscribe);
+
+router.post("/unsubscribe", emailUnSubscribe);
 
 export default router;
