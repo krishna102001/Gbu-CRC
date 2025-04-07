@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 const Footer = () => {
   const [email, setEmail] = useState("");
   const { backendUrl } = useContext(AppContext);
-  console.log(backendUrl);
   const handleSubscription = async () => {
     try {
       const { data } = await axios.post(
