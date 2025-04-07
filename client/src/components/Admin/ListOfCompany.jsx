@@ -4,6 +4,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import Loading from "../Loading";
+import { assets } from "../../assets/assets";
 
 const ListOfCompany = () => {
   const { backendUrl, adminToken } = useContext(AppContext);
@@ -78,6 +79,9 @@ const ListOfCompany = () => {
                 <th className='py-7 px-3 sm:px-4 text-left max-sm:hidden w-[15%] text-base font-semibold'>
                   Company Email
                 </th>
+                <th className='py-7 px-3 sm:px-4 text-left max-sm:hidden w-[15%] text-base font-semibold'>
+                  Company Phone No.
+                </th>
               </tr>
             </thead>
 
@@ -100,11 +104,21 @@ const ListOfCompany = () => {
                     <td className='py-5 px-3 sm:px-4 border-b text-center text-base'>
                       {index + 1}
                     </td>
-                    <td className='py-5 px-3 sm:px-4 border-b max-sm:hidden text-base'>
-                      {company?.name}
+                    <td className='py-5 px-3 sm:px-4 border-b flex items-center'>
+                      <img
+                        className='w-10 h-10 rounded mr-3 max-sm:hidden object-cover'
+                        src={company?.image || assets.default_avatar}
+                        alt='User avatar'
+                      />
+                      <span className='text-base'>
+                        {company?.name || "Unknown"}
+                      </span>
                     </td>
                     <td className='py-5 px-3 sm:px-4 border-b max-sm:hidden text-base'>
                       {company?.email}
+                    </td>
+                    <td className='py-5 px-3 sm:px-4 border-b max-sm:hidden text-base'>
+                      {company?.phone}
                     </td>
                   </tr>
                 ))

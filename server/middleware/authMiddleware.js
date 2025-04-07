@@ -1,25 +1,29 @@
 import jwt from "jsonwebtoken";
-import Company from "../models/Company.js";
-
-export const protectCompany = async (req, res, next) => {
-  const token = req.headers.token;
-
+const authMiddleWare = async (req, res, next) => {
+  let token = req.headers.authorization;
   if (!token) {
-    return res.json({
-      success: false,
-      message: "Not authorized",
-    });
+    return res.status(401).json({ success: false, message: "Token Not Found" });
   }
+  // console.log(token);
+  if (!token.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ success: false, message: "token is invalid" });
+  }
+
+  token = token.split(" ")[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    req.company = await Company.findById(decoded.id).select("-password");
-
+    req.userId = decoded.id;
+    req.userRole = decoded.role;
+    console.log(decoded.id);
     next();
   } catch (error) {
-    res.json({
-      success: false,
-      message: "Not authorized, Login Again",
-    });
+    console.log(error);
+    return res
+      .status(402)
+      .json({ success: false, message: "Unauthorized User" });
   }
 };
+
+export default authMiddleWare;

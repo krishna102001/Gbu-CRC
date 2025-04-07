@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 
-const StudentLogin = () => {
+const UserLogin = () => {
   const navigate = useNavigate();
   const [state, setState] = useState("Login");
   const [name, setName] = useState("");
@@ -16,42 +16,53 @@ const StudentLogin = () => {
   const [verifyBox, setVerifyBox] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("");
 
   const [image, setImage] = useState(false);
 
   const [isTextDataSubmited, setIsTextDataSubmited] = useState(false);
 
-  const { setShowStudentLogin, backendUrl, setUserToken, setUserData } =
-    useContext(AppContext);
+  const {
+    setShowUserLogin,
+    backendUrl,
+    setUserToken,
+    setUserData,
+    setCompanyData,
+    setCompanyToken,
+    setIsAdminLogged,
+    setAdminToken,
+    setAdminData,
+  } = useContext(AppContext);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-
-    if (state === "Sign Up" && !isTextDataSubmited) {
-      try {
-        const { data } = await axios.post(
-          backendUrl + "/api/users/check-student",
-          {
-            registration,
+    if (selectedValue === "student") {
+      if (state === "Sign Up" && !isTextDataSubmited) {
+        try {
+          const { data } = await axios.post(
+            backendUrl + "/api/users/check-student",
+            {
+              registration,
+            }
+          );
+          if (data.success) {
+            if (isRegistered) {
+              toast.success(data.message);
+            }
+            if (isVerified) {
+              setIsRegistered(true);
+              return setIsTextDataSubmited(true);
+            } else {
+              toast.error("Verify OTP Also");
+            }
+            return;
           }
-        );
-        if (data.success) {
-          if (isRegistered) {
-            toast.success(data.message);
-          }
-          if (isVerified) {
-            setIsRegistered(true);
-            return setIsTextDataSubmited(true);
-          } else {
-            toast.error("Verify OTP Also");
-          }
+        } catch (error) {
+          toast.error(error.response?.data?.message || error.message);
           return;
         }
-      } catch (error) {
-        toast.error(error.response?.data?.message || error.message);
-        return;
+        // return setIsTextDataSubmited(true);
       }
-      // return setIsTextDataSubmited(true);
     }
 
     try {
@@ -63,11 +74,23 @@ const StudentLogin = () => {
         console.log(data);
 
         if (data.success) {
-          setUserData(data.user);
-          setUserToken(data.token);
-          localStorage.setItem("studentToken", data.token);
-          setShowStudentLogin(false);
-          navigate("/");
+          if (data.user.role == "student") {
+            setUserData(data.user);
+            setUserToken(data.token);
+            localStorage.setItem("studentToken", data.token);
+          } else if (data.user.role == "hr") {
+            localStorage.setItem("companyToken", data.token);
+            setCompanyData(data.user.company);
+            setCompanyToken(data.token);
+            navigate("/dashboard");
+          } else {
+            localStorage.setItem("adminToken", data.token);
+            setIsAdminLogged(true);
+            setAdminToken(data.token);
+            setAdminData(data.user);
+            navigate("/admin/dashboard");
+          }
+          setShowUserLogin(false);
         } else {
           toast.error(data.message);
         }
@@ -78,6 +101,7 @@ const StudentLogin = () => {
         formData.append("registration", registration);
         formData.append("email", email);
         formData.append("image", image);
+        formData.append("role", selectedValue);
 
         const { data } = await axios.post(
           backendUrl + "/api/users/register",
@@ -85,11 +109,22 @@ const StudentLogin = () => {
         );
         // console.log(data);
         if (data.success) {
-          setUserData(data.user);
-          setUserToken(data.token);
-          localStorage.setItem("studentToken", data.token);
-          setShowStudentLogin(false);
-          navigate("/");
+          if (data.user.role == "student") {
+            setUserData(data.user);
+            setUserToken(data.token);
+            localStorage.setItem("studentToken", data.token);
+          } else if (data.user.role == "hr") {
+            localStorage.setItem("companyToken", data.token);
+            setCompanyToken(data.token);
+            navigate("/create-company");
+          } else {
+            localStorage.setItem("adminToken", data.token);
+            setAdminToken(data.adminToken);
+            setAdminData(data.adminUser);
+            setIsAdminLogged(true);
+            navigate("/admin/dashboard");
+          }
+          setShowUserLogin(false);
         } else {
           toast.error(data.message);
         }
@@ -131,7 +166,6 @@ const StudentLogin = () => {
       toast.error(error.message);
     }
   };
-
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -145,7 +179,7 @@ const StudentLogin = () => {
         className='relative bg-white p-10 sm:p-[50px] rounded-xl text-slate-500'
       >
         <h1 className='text-center text-3xl sm:text-4xl text-neutral-700 font-semibold font-primary mb-1 '>
-          Student {state}
+          {state}
         </h1>
         <p className='text-sm sm:text-[11px] text-center'>
           Welcome Back! Please {state} to continue
@@ -182,15 +216,17 @@ const StudentLogin = () => {
                     alt=''
                     className='shrink-0 pl-2'
                   />
-                  <input
+                  <select
                     className='outline-none text-sm p-2 flex-1 w-auto'
-                    onChange={(e) => setName(e.target.value)}
-                    value={name}
-                    type='text'
-                    placeholder='Student Name'
-                    required
-                  />
+                    value={selectedValue}
+                    onChange={(e) => setSelectedValue(e.target.value)}
+                  >
+                    <option value=''>Select the role</option>
+                    <option value='hr'>Hr</option>
+                    <option value='student'>Student</option>
+                  </select>
                 </div>
+
                 <div className='group border pl-4 pr-[70px] py-3 flex items-center justify-start gap-2 rounded-[10px] mt-5 transition duration-300 ease-in-out focus-within:border-primary w-full'>
                   <img
                     src={assets.person_icon}
@@ -199,13 +235,32 @@ const StudentLogin = () => {
                   />
                   <input
                     className='outline-none text-sm p-2 flex-1 w-auto'
-                    onChange={(e) => setRegistration(e.target.value)}
-                    value={registration}
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
                     type='text'
-                    placeholder='Registration Number'
+                    placeholder={
+                      selectedValue === "hr" ? "Hr Name" : "Student Name"
+                    }
                     required
                   />
                 </div>
+                {selectedValue == "student" && (
+                  <div className='group border pl-4 pr-[70px] py-3 flex items-center justify-start gap-2 rounded-[10px] mt-5 transition duration-300 ease-in-out focus-within:border-primary w-full'>
+                    <img
+                      src={assets.person_icon}
+                      alt=''
+                      className='shrink-0 pl-2'
+                    />
+                    <input
+                      className='outline-none text-sm p-2 flex-1 w-auto'
+                      onChange={(e) => setRegistration(e.target.value)}
+                      value={registration}
+                      type='text'
+                      placeholder='Registration Number'
+                      required
+                    />
+                  </div>
+                )}
               </div>
             )}
 
@@ -314,7 +369,7 @@ const StudentLogin = () => {
         )}
 
         <img
-          onClick={(e) => setShowStudentLogin(false)}
+          onClick={(e) => setShowUserLogin(false)}
           className='absolute top-5 right-5 cursor-pointer'
           src={assets.cross_icon}
           alt=''
@@ -324,4 +379,4 @@ const StudentLogin = () => {
   );
 };
 
-export default StudentLogin;
+export default UserLogin;

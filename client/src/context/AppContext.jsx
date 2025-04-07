@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useQuery } from "@tanstack/react-query";
 
 export const AppContext = createContext();
 
@@ -17,8 +16,7 @@ export const AppContextProvider = (props) => {
 
   const [jobs, setJobs] = useState([]);
 
-  const [showRecruiterLogin, setShowRecruiterLogin] = useState(false);
-  const [showStudentLogin, setShowStudentLogin] = useState(false);
+  const [showUserLogin, setShowUserLogin] = useState(false);
 
   const [companyToken, setCompanyToken] = useState(null);
   const [companyData, setCompanyData] = useState(null);
@@ -53,7 +51,7 @@ export const AppContextProvider = (props) => {
   const fetchCompanyData = async () => {
     try {
       const response = await axios.get(backendUrl + "/api/company/company", {
-        headers: { token: companyToken },
+        headers: { Authorization: `Bearer ${companyToken}` },
       });
       const data = response.data;
       console.log(data); // Move the console.log statement here
@@ -182,10 +180,8 @@ export const AppContextProvider = (props) => {
     isSearched,
     jobs,
     setJobs,
-    setShowRecruiterLogin,
-    showRecruiterLogin,
-    setShowStudentLogin,
-    showStudentLogin,
+    setShowUserLogin,
+    showUserLogin,
     companyToken,
     setCompanyToken,
     companyData,

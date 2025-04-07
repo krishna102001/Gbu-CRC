@@ -10,7 +10,7 @@ const Dashboard = () => {
   const { companyData, setCompanyData, setCompanyToken } =
     useContext(AppContext);
 
-  const companyName = companyData.name;
+  const companyName = companyData.name || "";
   // Function to logout for company
 
   const logout = () => {

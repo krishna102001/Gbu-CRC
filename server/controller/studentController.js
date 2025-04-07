@@ -1,5 +1,6 @@
 import Student from "../models/Student.js";
 
+//adding student logic ✅
 export const addStudent = async (req, res) => {
   const { registration, name, phone } = req.body;
   if (!registration || !name || !phone) {

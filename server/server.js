@@ -13,6 +13,7 @@ import adminRoutes from "./routes/AdminRoutes.js";
 import { defaultOtpCleanup } from "./utils/defaultOtpCleanup.js";
 import path from "path";
 import { fileURLToPath } from "url";
+// import seedRoles from "./utils/seedRole.js";
 
 //resolving dirname for es module
 const __filename = fileURLToPath(import.meta.url);
@@ -42,10 +43,12 @@ app.get("/debug-sentry", function mainHandler(req, res) {
   throw new Error("My first Sentry error!");
 });
 
-app.use("/api/company", companyRoutes);
-app.use("/api/jobs", JobRoutes);
+// await seedRoles();
+
+app.use("/api/company", companyRoutes); //✅
+app.use("/api/jobs", JobRoutes); //✅
 app.use("/api/users", userRoutes);
-app.use("/api/students", studentRoutes);
+app.use("/api/students", studentRoutes); //✅
 app.use("/api/admin", adminRoutes);
 
 setInterval(() => defaultOtpCleanup(), 1000 * 60);

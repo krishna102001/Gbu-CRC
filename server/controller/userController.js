@@ -9,18 +9,20 @@ import jwt from "jsonwebtoken";
 import { generateOtp } from "../utils/generateOtp.js";
 import { sendMail } from "../utils/sendMail.js";
 import Otp from "../models/Otp.js";
+import Resume from "../models/Resume.js";
+import Company from "../models/Company.js";
 
-// Register User Data
+// Register User Data 👍🏻
 export const registerUser = async (req, res) => {
-  const { name, password, registration, email } = req.body;
+  const { name, password, registration, email, role } = req.body;
   const imageFile = req.file; //imageFile
 
-  if (!name || !password || !registration || !email) {
+  if (!name || !password || !email) {
     // every data is present or not
     return res.json({ success: false, messsage: "All Fields Are Required" });
   }
   try {
-    const userExist = await User.findOne({ registration }); // check already account exist or not
+    const userExist = await User.findOne({ email }); // check already account exist or not
     if (userExist) {
       return res.json({
         success: false,
@@ -29,15 +31,18 @@ export const registerUser = async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
-    const imageUpload = await cloudinary.uploader.upload(imageFile.path); // image uploading in cloudinary
+    let imageUpload = "";
+    if (imageFile) {
+      imageUpload = await cloudinary.uploader.upload(imageFile.path); // image uploading in cloudinary
+    }
 
     const user = await User.create({
       name: name,
       email: email,
       registration: registration,
       password: hashedPassword,
-      image: imageUpload.secure_url,
+      image: imageUpload?.secure_url || "",
+      role: role,
     });
 
     res.status(201).json({
@@ -47,24 +52,29 @@ export const registerUser = async (req, res) => {
         email: user.email,
         name: user.name,
         image: user.image,
+        role: user.role,
       },
-      token: generateToken(user._id),
+      token: generateToken(user._id, user.role),
     });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
 };
-
+//login user ✅
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   // console.log(email, password);
   try {
     const user = await User.findOne({ email });
     // console.log(user);
-    if (!email) {
+    if (!user) {
       return res
         .status(400)
         .json({ success: false, message: "User Not Found" });
+    }
+    let company;
+    if (user.role === "hr") {
+      company = await Company.findOne({ userId: user._id });
     }
     if (await bcrypt.compare(password, user.password)) {
       res.json({
@@ -74,8 +84,10 @@ export const loginUser = async (req, res) => {
           email: user.email,
           name: user.name,
           image: user.image,
+          role: user.role,
+          company: company,
         },
-        token: generateToken(user._id),
+        token: generateToken(user._id, user.role),
       });
     } else {
       res
@@ -87,16 +99,9 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// Get user Data
+// Get user Data ✅
 export const getUserData = async (req, res) => {
-  const authorization = req.headers.authorization;
-  let token = "";
-  if (!authorization.startsWith("Bearer ")) {
-    return res.status(400).json({ success: false, message: "Not Authorized" });
-  }
-  token = authorization.substring(7, authorization.length);
-  let userToken = jwt.decode(token);
-  let userId = userToken.id;
+  let userId = req.userId;
   console.log(userId);
   console.log("User ID from request:", userId); // Log the user ID
 
@@ -114,16 +119,10 @@ export const getUserData = async (req, res) => {
   }
 };
 
-// Apply For a Job
+// Apply For a Job ✅
 export const applyForJob = async (req, res) => {
   const { jobId } = req.body;
-  const authorization = req.headers.authorization;
-  if (!authorization.startsWith("Bearer ")) {
-    return res.status(400).json({ success: false, message: "Not Authorized" });
-  }
-  const token = authorization.substring(7, authorization.length);
-  const userToken = jwt.decode(token);
-  const userId = userToken.id;
+  const userId = req.userId;
   console.log(userId);
   console.log("User ID from request:", userId); // Log the user ID
 
@@ -143,10 +142,14 @@ export const applyForJob = async (req, res) => {
       return res.json({ success: false, message: "Job not found" });
     }
 
+    const resume = await Resume.findOne({ userId });
+    const resumeId = resume._id;
+
     await JobApplication.create({
       companyId: jobData.companyId,
       userId,
       jobId,
+      resumeId,
       date: Date.now(),
     });
 
@@ -156,19 +159,10 @@ export const applyForJob = async (req, res) => {
   }
 };
 
-// Get User applied applications
+// Get User applied applications 👍🏻
 export const getUserJobApplications = async (req, res) => {
   try {
-    const authorization = req.headers.authorization;
-    let token = "";
-    if (!authorization.startsWith("Bearer ")) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Not Authorized" });
-    }
-    token = authorization.substring(7, authorization.length);
-    let userToken = jwt.decode(token);
-    let userId = userToken.id;
+    let userId = req.userId;
     console.log(userId);
     console.log("User ID from request:", userId); // Log the user ID
 
@@ -190,19 +184,10 @@ export const getUserJobApplications = async (req, res) => {
   }
 };
 
-// Update User Profile (resume)
+// Update User Profile (resume)✅
 export const updateUserResume = async (req, res) => {
   try {
-    const authorization = req.headers.authorization;
-    if (!authorization || !authorization.startsWith("Bearer ")) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Not Authorized" });
-    }
-
-    const token = authorization.substring(7);
-    const userToken = jwt.decode(token);
-    const userId = userToken.id;
+    const userId = req.userId;
     const resumeFile = req.file;
 
     if (!resumeFile) {
@@ -212,6 +197,7 @@ export const updateUserResume = async (req, res) => {
     }
 
     console.log("Resume file:", resumeFile);
+    console.log("user", userId);
 
     // Validate File Type
     const allowedMimeTypes = [
@@ -240,8 +226,18 @@ export const updateUserResume = async (req, res) => {
         resumeFile.mimetype === "application/pdf" ? "raw" : "image",
     });
 
-    userData.resume = resumeUpload.secure_url;
-    await userData.save();
+    let resumeData = await Resume.findOne({ userId: userData._id });
+    if (!resumeData) {
+      resumeData = new Resume({
+        userId: userId,
+        resume: resumeUpload.secure_url,
+      });
+    } else {
+      resumeData.userId = userId;
+    }
+
+    resumeData.resume = resumeUpload.secure_url;
+    await resumeData.save();
 
     return res.json({
       success: true,
@@ -256,7 +252,7 @@ export const updateUserResume = async (req, res) => {
   }
 };
 
-// Send OTP to user
+// Send OTP to user ✅
 export const sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
@@ -283,7 +279,7 @@ export const sendOtp = async (req, res) => {
   }
 };
 
-//Verify OTP of user
+//Verify OTP of user ✅
 export const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
 
@@ -305,7 +301,7 @@ export const verifyOtp = async (req, res) => {
   }
 };
 
-//check-student
+//check-student ✅
 export const checkStudent = async (req, res) => {
   const { registration } = req.body;
   try {

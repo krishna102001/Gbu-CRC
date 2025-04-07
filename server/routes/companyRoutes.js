@@ -5,37 +5,68 @@ import {
   getCompanyData,
   getCompanyJobApplicants,
   getCompanyPostedJobs,
-  loginCompany,
+  loginHR,
   postJob,
   registerCompany,
+  registerHR,
 } from "../controller/comapanyController.js";
 import upload from "../config/multer.js";
-import { protectCompany } from "../middleware/authMiddleware.js";
+import authMiddleWare from "../middleware/authMiddleware.js";
+import roleMiddleWare from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-// Register a company
-router.post("/register", upload.single("image"), registerCompany);
+// Register a HR ✅
+router.post("/register", upload.single("image"), registerHR);
 
-// Company Login
-router.post("/login", loginCompany);
+// Login a HR ✅
+router.post("/login", loginHR);
 
-// Get company Data
-router.get("/company", protectCompany, getCompanyData);
+// Register Company ✅
+router.post(
+  "/register/company",
+  upload.single("image"),
+  authMiddleWare,
+  roleMiddleWare("hr", "add"),
+  registerCompany
+);
 
-// Post a job
-router.post("/post-job", protectCompany, postJob);
+// Get company Data ✅
+router.get("/company", authMiddleWare, getCompanyData);
 
-// Get Applicants Data
-router.get("/applicants", protectCompany, getCompanyJobApplicants);
+// Post a job ✅
+router.post("/post-job", authMiddleWare, roleMiddleWare("hr", "add"), postJob);
 
-// Get company Job List
-router.get("/list-jobs", protectCompany, getCompanyPostedJobs);
+// Get Applicants Data ✅
+router.get(
+  "/applicants",
+  authMiddleWare,
+  roleMiddleWare("hr", "view"),
+  getCompanyJobApplicants
+);
 
-// Change Applications Status
-router.post("/change-status", protectCompany, ChangeJobApplicationStatus);
+// Get company Job List ✅
+router.get(
+  "/list-jobs",
+  authMiddleWare,
+  roleMiddleWare("hr", "view"),
+  getCompanyPostedJobs
+);
 
-// Change Applications Visiblity
-router.post("/change-visibility", protectCompany, changeVisiblity);
+// Change Applications Status ✅
+router.post(
+  "/change-status",
+  authMiddleWare,
+  roleMiddleWare("hr", "update"),
+  ChangeJobApplicationStatus
+);
+
+// Change Applications Visiblity ✅
+router.post(
+  "/change-visibility",
+  authMiddleWare,
+  roleMiddleWare("hr", "update"),
+  changeVisiblity
+);
 
 export default router;

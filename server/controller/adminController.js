@@ -1,4 +1,3 @@
-import Admin from "../models/Admin.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Company from "../models/Company.js";
@@ -7,85 +6,12 @@ import JobApplication from "../models/JobApplication.js";
 import PlacementRecord from "../models/PlacementRecord.js";
 import { placementRecordSchema } from "../validation/placementRecordSchema.js";
 
-export const adminLogin = async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const adminUser = await Admin.findOne({ email });
-    if (!adminUser) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid Credentials" });
-    }
-    const isMatchPassword = await bcrypt.compare(password, adminUser.password);
-    if (!isMatchPassword) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Email/Password is Invalid" });
-    }
-    const token = await jwt.sign(
-      { adminId: adminUser.id },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "1d",
-      }
-    );
-    res.status(200).json({
-      success: true,
-      adminUser: {
-        email: adminUser.email,
-        name: adminUser.name,
-        _id: adminUser._id,
-        phone: adminUser.phone,
-      },
-      adminToken: token,
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ success: false, message: "Failed to Login" });
-  }
-};
-
-export const adminSignup = async (req, res) => {
-  const { email, password, name, phone } = req.body;
-
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    if (
-      !(await Admin.create({
-        email,
-        password: hashedPassword,
-        name: name,
-        phone: phone,
-      }))
-    ) {
-      return res.json({
-        success: false,
-        message: "Failed to save the admin data",
-      });
-    }
-    res.json({ success: true, message: "Account created successfully" });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(400)
-      .json({ success: false, message: "Failed to Signup" });
-  }
-};
-
-// export const validateAdminToken = async (req, res) => {
-//   const _id = req.adminId;
-//   try {
-//     const data = await Admin.findOne({ _id });
-//     res.json({ success: true, data });
-//   } catch (error) {
-//     return res.json({ success: false, message: "Failed to validate token" });
-//   }
-// };
-
+// List of Company is registered ✅
 export const listOfCompany = async (req, res) => {
   try {
-    const listCompanyExist = await Company.find({}).select("name email");
+    const listCompanyExist = await Company.find({}).select(
+      "name email phone image"
+    );
     if (!listCompanyExist) {
       return res
         .status(400)
@@ -99,9 +25,10 @@ export const listOfCompany = async (req, res) => {
   }
 };
 
+// List of Student is registered on job ✅
 export const listOfStudent = async (req, res) => {
   try {
-    const listStudent = await User.find({}).select(
+    const listStudent = await User.find({ role: "student" }).select(
       "registration name email image"
     );
     if (!listOfStudent) {
@@ -117,6 +44,7 @@ export const listOfStudent = async (req, res) => {
   }
 };
 
+//list of Student have applied for particular job ✅
 export const listOfStudentAppliedToCompany = async (req, res) => {
   try {
     const listStudent = await JobApplication.find({})
@@ -133,6 +61,7 @@ export const listOfStudentAppliedToCompany = async (req, res) => {
         path: "companyId",
         select: "name",
       });
+
     if (!listStudent) {
       return res
         .status(400)
@@ -147,6 +76,7 @@ export const listOfStudentAppliedToCompany = async (req, res) => {
   }
 };
 
+// add placement record ✅
 export const addPlacementRecord = async (req, res) => {
   const {
     session,
@@ -185,6 +115,7 @@ export const addPlacementRecord = async (req, res) => {
   }
 };
 
+//get the placement record ✅
 export const getPlacementRecord = async (req, res) => {
   try {
     const placementRecord = await PlacementRecord.find({});
@@ -202,6 +133,7 @@ export const getPlacementRecord = async (req, res) => {
   }
 };
 
+//edit the placement record ✅
 export const editPlacementRecord = async (req, res) => {
   const {
     session,
@@ -238,6 +170,7 @@ export const editPlacementRecord = async (req, res) => {
   }
 };
 
+//delete the placement record ✅
 export const deletePlacementRecord = async (req, res) => {
   const id = req.params.id;
   try {

@@ -72,9 +72,9 @@ const ListOfStudentApplied = () => {
                 <th className='py-7 px-3 sm:px-4 text-left w-[5%] text-base font-semibold'>
                   S No.
                 </th>
-                <th className='py-7 px-3 sm:px-4 text-left max-sm:hidden w-[15%] text-base font-semibold'>
+                {/* <th className='py-7 px-3 sm:px-4 text-left max-sm:hidden w-[15%] text-base font-semibold'>
                   Registration
-                </th>
+                </th> */}
                 <th className='py-7 px-3 sm:px-4 text-left max-sm:hidden w-[15%] text-base font-semibold'>
                   Student Name
                 </th>
@@ -109,9 +109,9 @@ const ListOfStudentApplied = () => {
                     <td className='py-5 px-3 sm:px-4 border-b text-center text-base'>
                       {index + 1}
                     </td>
-                    <td className='py-5 px-3 sm:px-4 border-b max-sm:hidden text-base'>
+                    {/* <td className='py-5 px-3 sm:px-4 border-b max-sm:hidden text-base'>
                       {student?.userId?.registration}
-                    </td>
+                    </td> */}
                     <td className='py-5 px-3 sm:px-4 border-b max-sm:hidden text-base'>
                       {student?.userId?.name || "Unknown"}
                     </td>

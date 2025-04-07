@@ -25,7 +25,7 @@ const AddJob = () => {
       const { data } = await axios.post(
         backendUrl + "/api/company/post-job",
         { title, description, location, category, level, salary },
-        { headers: { token: companyToken } }
+        { headers: { Authorization: `Bearer ${companyToken}` } }
       );
 
       if (data.success) {

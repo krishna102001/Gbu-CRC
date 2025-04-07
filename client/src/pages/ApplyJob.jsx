@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
@@ -56,11 +56,6 @@ const ApplyJob = () => {
       if (!userData) {
         return toast.error("Please login to apply.");
       }
-
-      if (!userData.resume) {
-        return toast.error("Upload a resume to apply.");
-      }
-
       const token = userToken;
       const { data } = await axios.post(
         `${backendUrl}/api/users/apply`,
@@ -76,6 +71,7 @@ const ApplyJob = () => {
       }
     } catch (error) {
       toast.error("Error applying for the job. Please try again.");
+      console.log(error);
     }
   };
 
