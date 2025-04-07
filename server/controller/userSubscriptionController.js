@@ -1,4 +1,13 @@
 import Subscription from "../models/Subscriptions.js";
+import { sendMail } from "../utils/sendMail.js";
+
+const content = {
+  subject: "Successfully Subscribed the Mail",
+  title: "You're In!",
+  message: `Congratulations! You have successfully subscribed to our mailing list. You'll now receive updates, newsletters, and exciting news directly in your inbox.`,
+  buttonText: "Click here for unsubscribe",
+  buttonUrl: "http://localhost:3000/api/subscriptions/unsubscribe",
+};
 
 export const emailSubscribe = async (req, res) => {
   const { email } = req.body;
@@ -12,6 +21,7 @@ export const emailSubscribe = async (req, res) => {
     await Subscription.create({
       email,
     });
+    await sendMail(email, "", content);
     res.status(200).json({ success: true, message: "Successfully Subscribed" });
   } catch (error) {
     res.status(400).json({ success: false, message: "Failed Try again" });
