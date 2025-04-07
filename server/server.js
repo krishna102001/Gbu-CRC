@@ -10,6 +10,7 @@ import JobRoutes from "./routes/jobRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import studentRoutes from "./routes/StudentRoutes.js";
 import adminRoutes from "./routes/AdminRoutes.js";
+import userSubscriptionRoutes from "./routes/userSubscriptionRoutes.js";
 import { defaultOtpCleanup } from "./utils/defaultOtpCleanup.js";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -51,6 +52,7 @@ app.use("/api/jobs", JobRoutes); //✅
 app.use("/api/users", userRoutes);
 app.use("/api/students", studentRoutes); //✅
 app.use("/api/admin", adminRoutes);
+app.use("/api/subscriptions", userSubscriptionRoutes);
 
 setInterval(() => defaultOtpCleanup(), 1000 * 60);
 
