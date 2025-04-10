@@ -1,0 +1,34 @@
+name: Build Checker
+
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  Build-on-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone repo
+        uses: actions/checkout@v4
+      - name: setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          # ---- Client ---
+      - name: Install client packages
+        run: |
+          cd client
+          npm install
+      - name: build the client
+        run: |
+          cd client
+          npm run build
+        # ---- server ----
+    #   - name: Install server packages
+    #     run: |
+    #       cd server
+    #       npm install
+    #   - name: build the server
+    #     run: |
+    #       cd server
+    #       npm run build
