@@ -60,12 +60,10 @@ setInterval(() => defaultOtpCleanup(), 1000 * 60);
 // if you define at the top then it catches all GET requests, including /api/* routes — meaning any GET request to an API endpoint is
 // intercepted before hitting your API route handlers. That's why GET requests are not reaching their actual route handlers, and you get
 // the frontend index.html instead of API data.
-
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
 // Start the server
 const port = process.env.PORT || 3000;
-
 app.listen(port, () => console.log(`Server running on port ${port}`));
