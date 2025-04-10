@@ -21,7 +21,7 @@ jobs:
           npm install
       - name: Lint checker
         run: |
-          cd server 
+          cd client
           npm run lint
       - name: build the client
         run: |
