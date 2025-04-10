@@ -1,7 +1,27 @@
+import { useContext, useState } from "react";
 import logo from "../assets/gbu_logo.png";
 import { motion } from "framer-motion";
-
+import axios from "axios";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
 const Footer = () => {
+  const [email, setEmail] = useState("");
+  const { backendUrl } = useContext(AppContext);
+  const handleSubscription = async () => {
+    try {
+      const { data } = await axios.post(
+        `${backendUrl}/api/subscriptions/subscribe`,
+        {
+          email,
+        }
+      );
+      if (data.success) {
+        toast.success(data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
   return (
     <section className='pt-16 pb-7 bg-gray-900 mt-[10rem]'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
@@ -32,8 +52,13 @@ const Footer = () => {
                   type='text'
                   className='bg-transparent text-base font-normal text-white placeholder-gray-500 focus:outline-none'
                   placeholder='Your email here...'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
-                <button className='py-3 px-7 hidden min-[470px]:block rounded-full bg-primary text-base font-semibold text-white shadow-sm transition-all duration-500 hover:bg-[#444444] focus:outline-none'>
+                <button
+                  className='py-3 px-7 hidden min-[470px]:block rounded-full bg-primary text-base font-semibold text-white shadow-sm transition-all duration-500 hover:bg-[#444444] focus:outline-none'
+                  onClick={handleSubscription}
+                >
                   Submit
                 </button>
               </div>
