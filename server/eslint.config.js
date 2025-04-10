@@ -1,11 +1,14 @@
 import { defineConfig } from "eslint/config";
 import globals from "globals";
-import pluginReact from "eslint-plugin-react";
 
 export default defineConfig([
   {
-    files: ["**/*.{js,mjs,cjs,jsx}"],
+    files: ["**/*.{js,mjs,cjs}"],
     languageOptions: { globals: globals.browser },
+    rules: {
+      // "no-console": "warn",
+      // semi: ["error", "always"],
+      quotes: ["error", "double"],
+    },
   },
-  pluginReact.configs.flat.recommended,
 ]);

@@ -44,7 +44,8 @@ app.get("/debug-sentry", function mainHandler(req, res) {
 });
 
 await seedRoles();
-
+const x = 42;
+console.log(x);
 app.use("/api/company", companyRoutes); //✅
 app.use("/api/jobs", JobRoutes); //✅
 app.use("/api/users", userRoutes);
