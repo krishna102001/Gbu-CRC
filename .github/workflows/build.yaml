@@ -19,15 +19,19 @@ jobs:
         run: |
           cd client
           npm install
+      - name: Lint checker
+        run: npm run lint
       - name: build the client
         run: |
           cd client
           npm run build
         # ---- server ----
-    #   - name: Install server packages
-    #     run: |
-    #       cd server
-    #       npm install
+      - name: Install server packages
+        run: |
+          cd server
+          npm install
+      - name: Lint checker
+        run: npm run lint
     #   - name: build the server
     #     run: |
     #       cd server
