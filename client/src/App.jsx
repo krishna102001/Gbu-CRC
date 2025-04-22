@@ -22,6 +22,8 @@ import AddPlacementRecord from "./components/Admin/AddPlacementRecord";
 import PlacementRecordLayout from "./components/PlacementRecordLayout";
 import PlacementRecords from "./components/PlacementRecords";
 import CompanyForm from "./components/CompanyForm";
+import React from "react";
+import AddStudent from "./components/Admin/AddStudent";
 
 const App = () => {
   const { companyToken, showUserLogin, adminToken } = useContext(AppContext);
@@ -74,6 +76,7 @@ const App = () => {
                 path='add-placement-record'
                 element={<AddPlacementRecord />}
               />
+              <Route path='add-students-record' element={<AddStudent />} />
             </Route>
           </>
         )}

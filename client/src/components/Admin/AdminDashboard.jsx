@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { motion } from "framer-motion";
+import React from "react";
 const AdminDashboard = () => {
   return (
     <motion.div
@@ -28,6 +29,18 @@ const AdminDashboard = () => {
             >
               <img className='min-w-4' src={assets.add_icon} alt='' />
               <p className='max-sm:hidden'>Add Placement Record</p>
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                ` flex items-center p-3 sm:px-6 gap-4 w-full hover:bg-gray-200 rounded-xl  ${
+                  isActive &&
+                  "bg-blue-200 border-r-4 border-primary p-4 rounded-xl text-primary transition duration-200 ease-in-out"
+                }`
+              }
+              to={"/admin/dashboard/add-students-record"}
+            >
+              <img className='min-w-4' src={assets.add_icon} alt='' />
+              <p className='max-sm:hidden'>Add Students</p>
             </NavLink>
             <NavLink
               className={({ isActive }) =>
