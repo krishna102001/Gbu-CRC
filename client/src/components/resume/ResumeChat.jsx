@@ -38,7 +38,6 @@ const botMessage = [
 const ResumeChat = () => {
   const [messages, setMessages] = useState([]);
   const [query, setQuery] = useState("");
-  const messageRef = useRef(null);
   useEffect(() => {
     setMessages(botMessage);
   }, []);
@@ -52,7 +51,7 @@ const ResumeChat = () => {
   return (
     <div className='flex flex-col justify-between min-h-[80vh] p-4'>
       <div>
-        <ResumeDisplay messages={messages} messageRef={messageRef} />
+        <ResumeDisplay messages={messages} />
       </div>
       <div>
         <ResumeInput
@@ -65,7 +64,7 @@ const ResumeChat = () => {
   );
 };
 
-const ResumeDisplay = ({ messages, messageRef }) => {
+const ResumeDisplay = ({ messages }) => {
   return (
     <div className=' flex-1 space-y-4 pr-2 overflow-y-auto '>
       {messages.map((message, index) => (
@@ -95,19 +94,33 @@ const ResumeDisplay = ({ messages, messageRef }) => {
           )}
         </div>
       ))}
-      <div ref={messageRef} />
     </div>
   );
 };
 
 const ResumeInput = ({ query, setQuery, handleClick }) => {
+  const handlePdfFile = () => {
+    const inputFile = document.createElement("input");
+    inputFile.setAttribute("type", "file");
+    inputFile.setAttribute("accept", "application/pdf");
+    inputFile.click();
+    //backend main resume pdf file send karna hain
+    try {
+    } catch (error) {}
+  };
   return (
     <div className=' mt-4 flex  items-center gap-2'>
-      <div className='hover:bg-gray-600 p-1 rounded-full'>
+      <div
+        className='hover:bg-gray-600 p-1 rounded-full relative group'
+        onClick={handlePdfFile}
+      >
         <MdUploadFile
           size={32}
           className='hover:text-white/70 cursor-pointer'
         />
+        <div className='absolute hidden group-hover:block text-xs -top-10 bg-black/30 p-1 left-0 rounded'>
+          Upload Resume
+        </div>
       </div>
       <input
         type='text'
