@@ -24,6 +24,7 @@ import PlacementRecords from "./components/PlacementRecords";
 import CompanyForm from "./components/CompanyForm";
 import React from "react";
 import AddStudent from "./components/Admin/AddStudent";
+import ResumeChecker from "./components/resume/Resume";
 
 const App = () => {
   const { companyToken, showUserLogin, adminToken } = useContext(AppContext);
@@ -85,6 +86,14 @@ const App = () => {
           element={
             <PlacementRecordLayout>
               <PlacementRecords />
+            </PlacementRecordLayout>
+          }
+        />
+        <Route
+          path='/resume-checker'
+          element={
+            <PlacementRecordLayout>
+              <ResumeChecker />
             </PlacementRecordLayout>
           }
         />
