@@ -1,6 +1,6 @@
 import React from "react";
 const ResumeChecker = () => {
-  return <div>Resume checker</div>;
+  return <div></div>;
 };
 
 export default ResumeChecker;
