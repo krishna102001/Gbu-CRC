@@ -24,7 +24,7 @@ const ResumeChat = () => {
   }, []);
   const handleClick = async () => {
     console.log(query);
-    if (!query.trim) {
+    if (query.length == 0) {
       toast.error("provide job descriptions");
       return;
     }
@@ -40,6 +40,7 @@ const ResumeChat = () => {
         setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
       toast.error(error.response?.data?.message);
     }
   };
