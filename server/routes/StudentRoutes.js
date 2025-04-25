@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addStudent,
+  chatWithAI,
   uploadResumePdf,
 } from "../controller/studentController.js";
 import authMiddleWare from "../middleware/authMiddleware.js";
@@ -19,5 +20,8 @@ router.post(
 
 // student upload the resume pdf ✅
 router.post("/upload/pdf", upload.single("pdf"), uploadResumePdf);
+
+// student chat with ai
+router.post("/chat/ai", chatWithAI);
 
 export default router;

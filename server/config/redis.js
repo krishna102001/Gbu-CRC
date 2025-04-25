@@ -2,7 +2,7 @@ import { createClient } from "redis";
 
 export const redisClient = createClient();
 
-redisClient.on("error", (err) => console.log(err));
+redisClient.on("error", (err) => console.log("Failed to connect the redis"));
 
 export async function InitializeRedis() {
   try {
