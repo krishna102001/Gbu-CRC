@@ -22,6 +22,9 @@ GBU CRC Portal is an online job portal that connects students and recruiters, ma
 - Cloudinary(Image/Resume Storage)
 - Zod(Validation)
 - Nodemailer(Mail Sending)
+- Redis(Queue)
+- Langchain(AI services)
+- Qdrant(vector database)
 
 ## Project Setup
 
@@ -42,7 +45,7 @@ For frontend:
 
 For Backend:
 
-- go to frontend directory
+- go to Server directory
   ```bash
   cd server
   ```
@@ -50,7 +53,24 @@ For Backend:
   ```bash
   npm install
   ```
-- Start Frontend Server
+- Start Server Server
+  ```bash
+  npm start
+  ```
+
+For Workers:
+
+- go to Workers directory
+
+  ```bash
+   cd workers
+  ```
+
+- install all package
+  ```bash
+  npm install
+  ```
+- Start Worker Server
   ```bash
   npm start
   ```
