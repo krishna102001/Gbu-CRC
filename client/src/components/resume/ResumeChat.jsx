@@ -1,52 +1,47 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { AppContext } from "../../context/AppContext";
 import { MdUploadFile } from "react-icons/md";
+import { toast } from "react-toastify";
 const botMessage = [
   {
     role: "ai",
-    content: "hello i am llm how i can assist you",
-  },
-  {
-    role: "user",
-    content: "hello i am krishna",
+    content: "Hello i am crc ai model.",
   },
   {
     role: "ai",
-    content: "hello i am llm how i can assist you",
-  },
-  {
-    role: "user",
-    content: "hello i am krishna",
-  },
-  {
-    role: "ai",
-    content: "hello i am llm how i can assist you",
-  },
-  {
-    role: "user",
-    content: "hello i am krishna",
-  },
-  {
-    role: "ai",
-    content: "hello i am llm how i can assist you",
-  },
-  {
-    role: "user",
-    content: "hello i am krishna",
+    content: "To know your ATS Score Upload the Resume First",
   },
 ];
 
 const ResumeChat = () => {
   const [messages, setMessages] = useState([]);
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { backendUrl } = useContext(AppContext);
   useEffect(() => {
     setMessages(botMessage);
   }, []);
-  //   useEffect(() => {
-  //     messageRef.current?.scrollIntoView({ behavior: "smooth" });
-  //   }, [messages]);
-  const handleClick = () => {
+  const handleClick = async () => {
+    console.log(query);
+    if (!query.trim) {
+      toast.error("provide job descriptions");
+      return;
+    }
+    setLoading(true);
     setMessages((prev) => [...prev, { role: "user", content: query }]);
-    alert(`hello clicked ${query}`);
+    try {
+      const { data } = await axios.post(`${backendUrl}/api/students/chat/ai`, {
+        query,
+      });
+      if (data.success) {
+        setQuery("");
+        setMessages((prev) => [...prev, { role: "ai", content: data.message }]);
+        setLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+    }
   };
   return (
     <div className='flex flex-col justify-between min-h-[80vh] p-4'>
@@ -58,6 +53,8 @@ const ResumeChat = () => {
           query={query}
           setQuery={setQuery}
           handleClick={handleClick}
+          loading={loading}
+          setMessages={setMessages}
         />
       </div>
     </div>
@@ -98,15 +95,48 @@ const ResumeDisplay = ({ messages }) => {
   );
 };
 
-const ResumeInput = ({ query, setQuery, handleClick }) => {
+const ResumeInput = ({
+  query,
+  setQuery,
+  handleClick,
+  setMessages,
+  loading,
+}) => {
+  const { backendUrl } = useContext(AppContext);
+  console.log(backendUrl);
   const handlePdfFile = () => {
     const inputFile = document.createElement("input");
     inputFile.setAttribute("type", "file");
     inputFile.setAttribute("accept", "application/pdf");
     inputFile.click();
     //backend main resume pdf file send karna hain
-    try {
-    } catch (error) {}
+    inputFile.addEventListener("change", async () => {
+      try {
+        const formData = new FormData();
+        formData.append("pdf", inputFile.files[0]);
+        const { data } = await axios.post(
+          `${backendUrl}/api/students/upload/pdf`,
+          formData
+        );
+        if (data.success) {
+          toast.success(data.message);
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: "user",
+              content: "Resume Uploaded Successfully ✅",
+            },
+            {
+              role: "ai",
+              content: "Now provide me Job Descriptions(JD)",
+            },
+          ]);
+        }
+      } catch (error) {
+        toast.error(error.response?.data?.message);
+        console.log(error);
+      }
+    });
   };
   return (
     <div className=' mt-4 flex  items-center gap-2'>
@@ -132,8 +162,9 @@ const ResumeInput = ({ query, setQuery, handleClick }) => {
       <button
         className='ml-2 p-2 bg-blue-600 rounded-lg text-white hover:bg-blue-700 shadow-sm'
         onClick={handleClick}
+        disabled={loading}
       >
-        Send
+        {loading ? "Analyzing..." : "Send"}
       </button>
     </div>
   );
