@@ -1,3 +1,4 @@
+import React from "react";
 const PlacementRecordTable = ({ records, onEditHandler, onDeleteHandler }) => {
   return (
     <div className='mt-8'>

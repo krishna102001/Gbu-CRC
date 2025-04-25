@@ -1,9 +1,11 @@
 import express from "express";
 import {
   addPlacementRecord,
+  addStudentsRecord,
   deletePlacementRecord,
   editPlacementRecord,
   getPlacementRecord,
+  getStudentsRecord,
   listOfCompany,
   listOfStudent,
   listOfStudentAppliedToCompany,
@@ -11,6 +13,7 @@ import {
 } from "../controller/adminController.js";
 import authMiddleWare from "../middleware/authMiddleware.js";
 import roleMiddleWare from "../middleware/roleMiddleware.js";
+import upload from "../config/multer.js";
 
 const router = express.Router();
 
@@ -47,6 +50,23 @@ router.post(
   authMiddleWare,
   roleMiddleWare("admin", "add"),
   addPlacementRecord
+);
+
+// add student record ✅
+router.post(
+  "/add-students-record",
+  authMiddleWare,
+  roleMiddleWare("admin", "add"),
+  upload.single("file"),
+  addStudentsRecord
+);
+
+// get student record
+router.get(
+  "/get-students-record",
+  authMiddleWare,
+  roleMiddleWare("admin", "view"),
+  getStudentsRecord
 );
 
 //get the placement record ✅

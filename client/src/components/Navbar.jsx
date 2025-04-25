@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import logo from "../assets/gbu_logo.png";
 import { motion } from "framer-motion";
+import React from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -41,10 +42,10 @@ const Navbar = () => {
               height={60}
             />
             <div>
-              <h1 className='font-bold text-xl text-blue-800 tracking-wider'>
+              <h1 className='font-bold text-lg md:text-xl text-blue-800 tracking-wider'>
                 GAUTAM BUDDHA UNIVERSITY
               </h1>
-              <p>Corporate Relations Cell</p>
+              <p className='text-xs'>Corporate Relations Cell</p>
             </div>
           </div>
 

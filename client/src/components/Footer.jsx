@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
+import React from "react";
 const Footer = () => {
   const [email, setEmail] = useState("");
   const { backendUrl } = useContext(AppContext);
@@ -109,10 +110,10 @@ const Footer = () => {
               <ul className='flex flex-col gap-6'>
                 <li>
                   <a
-                    href='/'
+                    href='/resume-checker'
                     className='text-lg font-normal text-gray-400 transition-all duration-300 hover:text-violet-400 focus:outline-none'
                   >
-                    Resume Builder
+                    ATS Score Checker
                   </a>
                 </li>
                 <li>

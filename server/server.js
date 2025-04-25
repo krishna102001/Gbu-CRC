@@ -14,7 +14,8 @@ import userSubscriptionRoutes from "./routes/userSubscriptionRoutes.js";
 import { defaultOtpCleanup } from "./utils/defaultOtpCleanup.js";
 import path from "path";
 import { fileURLToPath } from "url";
-import seedRoles from "./utils/seedRole.js";
+import { InitializeRedis } from "./config/redis.js";
+// import seedRoles from "./utils/seedRole.js";
 
 //resolving dirname for es module
 const __filename = fileURLToPath(import.meta.url);
@@ -26,6 +27,7 @@ const app = express();
 // Connect to MongoDB
 await connectDB();
 await connectCloudinary();
+await InitializeRedis();
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
@@ -44,7 +46,7 @@ app.get("/debug-sentry", function mainHandler(req, res) {
   throw new Error("My first Sentry error!");
 });
 
-await seedRoles();
+// await seedRoles();
 const x = 42;
 console.log(x);
 app.use("/api/company", companyRoutes); //✅

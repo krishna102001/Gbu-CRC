@@ -1,10 +1,10 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import Company from "../models/Company.js";
 import User from "../models/User.js";
 import JobApplication from "../models/JobApplication.js";
 import PlacementRecord from "../models/PlacementRecord.js";
 import { placementRecordSchema } from "../validation/placementRecordSchema.js";
+import XLSX from "xlsx";
+import Student from "../models/Student.js";
 
 // List of Company is registered ✅
 export const listOfCompany = async (req, res) => {
@@ -112,6 +112,51 @@ export const addPlacementRecord = async (req, res) => {
     return res
       .status(400)
       .json({ success: false, message: "Failed to Add the Record" });
+  }
+};
+
+// add students record ✅
+export const addStudentsRecord = async (req, res) => {
+  const dataFile = req.file;
+  console.log(dataFile);
+  if (!dataFile) {
+    return res
+      .status(403)
+      .json({ success: false, message: "Student file record not found" });
+  }
+  try {
+    const workbook = XLSX.readFile(dataFile.path);
+    // console.log(workbook);
+    const sheetName = workbook.SheetNames[0];
+    // console.log(sheetName);
+    const sheet = workbook.Sheets[sheetName];
+    const studentData = XLSX.utils.sheet_to_json(sheet);
+
+    const requiredField = ["registration", "name", "branch", "email", "phone"];
+    const studentFilterData = studentData.map((data) => {
+      const entry = {};
+      for (let key of requiredField) {
+        entry[key] = data[key] || "";
+      }
+      return entry;
+    });
+    await Student.deleteMany({});
+    await Student.insertMany(studentFilterData);
+    res.json({ success: true, message: "Successfully saved data!" });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// get students record ✅
+export const getStudentsRecord = async (req, res) => {
+  try {
+    const data = await Student.find({});
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    res
+      .status(400)
+      .json({ success: false, message: "Failed to retrived the data" });
   }
 };
 
