@@ -8,6 +8,7 @@ GBU CRC Portal is an online job portal that connects students and recruiters, ma
 - To eliminate the use of Google Forms and make the process more professional.
 - To avoid repetitive form-filling for students.
 - To simplify data management for the university.
+- To Get ATS Score Free for Student.
 
 ## Tech Stack
 
