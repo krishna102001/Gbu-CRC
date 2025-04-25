@@ -1,7 +1,11 @@
 import express from "express";
-import { addStudent } from "../controller/studentController.js";
+import {
+  addStudent,
+  uploadResumePdf,
+} from "../controller/studentController.js";
 import authMiddleWare from "../middleware/authMiddleware.js";
 import roleMiddleWare from "../middleware/roleMiddleware.js";
+import upload from "../config/multer.js";
 
 const router = express.Router();
 
@@ -12,5 +16,8 @@ router.post(
   roleMiddleWare("admin", "add"),
   addStudent
 );
+
+// student upload the resume pdf
+router.post("/upload/pdf", upload.single("pdf"), uploadResumePdf);
 
 export default router;

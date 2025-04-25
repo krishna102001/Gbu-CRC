@@ -14,6 +14,7 @@ import userSubscriptionRoutes from "./routes/userSubscriptionRoutes.js";
 import { defaultOtpCleanup } from "./utils/defaultOtpCleanup.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { InitializeRedis } from "./config/redis.js";
 // import seedRoles from "./utils/seedRole.js";
 
 //resolving dirname for es module
@@ -26,6 +27,7 @@ const app = express();
 // Connect to MongoDB
 await connectDB();
 await connectCloudinary();
+await InitializeRedis();
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
