@@ -4,7 +4,7 @@ const ResumeChecker = () => {
   return (
     <div className='flex flex-col items-center'>
       <div className='flex flex-col'>
-        <h2 className='text-4xl font-bold mt-2 uppercase text-gray-600'>
+        <h2 className='text-xl md:text-4xl font-bold mt-2 uppercase text-gray-600'>
           Get your ATS Score Free
         </h2>
         <p className=' flex-1 ml-auto text-xs'>
