@@ -17,7 +17,7 @@ router.post(
   addStudent
 );
 
-// student upload the resume pdf
+// student upload the resume pdf ✅
 router.post("/upload/pdf", upload.single("pdf"), uploadResumePdf);
 
 export default router;
