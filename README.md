@@ -8,6 +8,7 @@ GBU CRC Portal is an online job portal that connects students and recruiters, ma
 - To eliminate the use of Google Forms and make the process more professional.
 - To avoid repetitive form-filling for students.
 - To simplify data management for the university.
+- To Get ATS Score Free for Student.
 
 ## Tech Stack
 
@@ -21,6 +22,9 @@ GBU CRC Portal is an online job portal that connects students and recruiters, ma
 - Cloudinary(Image/Resume Storage)
 - Zod(Validation)
 - Nodemailer(Mail Sending)
+- Redis(Queue)
+- Langchain(AI services)
+- Qdrant(vector database)
 
 ## Project Setup
 
@@ -41,7 +45,7 @@ For frontend:
 
 For Backend:
 
-- go to frontend directory
+- go to Server directory
   ```bash
   cd server
   ```
@@ -49,7 +53,24 @@ For Backend:
   ```bash
   npm install
   ```
-- Start Frontend Server
+- Start Server Server
+  ```bash
+  npm start
+  ```
+
+For Workers:
+
+- go to Workers directory
+
+  ```bash
+   cd workers
+  ```
+
+- install all package
+  ```bash
+  npm install
+  ```
+- Start Worker Server
   ```bash
   npm start
   ```
