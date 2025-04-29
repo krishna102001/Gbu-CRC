@@ -13,6 +13,7 @@ import {
 import upload from "../config/multer.js";
 import authMiddleWare from "../middleware/authMiddleware.js";
 import roleMiddleWare from "../middleware/roleMiddleware.js";
+import rateLimiter from "../middleware/rate-limitter.js";
 
 const router = express.Router();
 
@@ -33,10 +34,10 @@ router.post("/login", loginUser);
 router.get("/user", authMiddleWare, getUserData);
 
 // Send OTP ✅
-router.post("/send-otp", sendOtp);
+router.post("/send-otp", rateLimiter(4), sendOtp);
 
 //Verify OTP ✅
-router.post("/verify-otp", verifyOtp);
+router.post("/verify-otp", rateLimiter(5), verifyOtp);
 
 //Check STUDENT ✅
 router.post("/check-student", checkStudent);
