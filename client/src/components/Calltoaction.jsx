@@ -1,6 +1,6 @@
 import calltoaction from "../assets/gbu_banner1.jpg";
 import { motion } from "framer-motion";
-
+import React from "react";
 const Calltoaction = () => {
   return (
     <div>

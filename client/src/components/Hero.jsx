@@ -8,6 +8,7 @@ import companyLogo2 from "../assets/microsoft.png";
 import companyLogo3 from "../assets/pw_skill.png";
 import companyLogo5 from "../assets/tcs.png";
 import { motion } from "framer-motion";
+import React from "react";
 
 const Hero = () => {
   const { setSearchFilter, setIsSearched } = useContext(AppContext);

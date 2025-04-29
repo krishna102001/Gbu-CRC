@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 // import { useAuth } from "@clerk/clerk-react";
 import Calltoaction from "../components/Calltoaction";
 import { motion } from "framer-motion";
+import React from "react";
 
 const ApplyJob = () => {
   const { id } = useParams();

@@ -13,7 +13,7 @@ import {
   Legend,
   ArcElement,
 } from "chart.js";
-
+import React from "react";
 // Registering required chart.js components
 Chart.register(
   CategoryScale,

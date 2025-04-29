@@ -5,6 +5,7 @@ import axios from "axios";
 import Loading from "../components/Loading";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+import React from "react";
 
 const ViewApplications = () => {
   const { backendUrl, companyToken } = useContext(AppContext);

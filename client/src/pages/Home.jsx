@@ -4,6 +4,7 @@ import JobListing from "../components/JobListing";
 import AppDownload from "../components/AppDownload";
 import Footer from "../components/Footer";
 import Calltoaction from "../components/Calltoaction";
+import React from "react";
 
 const Home = () => {
   return (
