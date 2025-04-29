@@ -2,6 +2,7 @@ import express from "express";
 import {
   ChangeJobApplicationStatus,
   changeVisiblity,
+  editJob,
   getCompanyData,
   getCompanyJobApplicants,
   getCompanyPostedJobs,
@@ -67,6 +68,13 @@ router.post(
   authMiddleWare,
   roleMiddleWare("hr", "update"),
   changeVisiblity
+);
+
+router.put(
+  "/edit-job/:id",
+  authMiddleWare,
+  roleMiddleWare("hr", "update"),
+  editJob
 );
 
 export default router;
