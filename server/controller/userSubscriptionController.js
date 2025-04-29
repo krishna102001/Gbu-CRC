@@ -4,7 +4,8 @@ import { sendMail } from "../utils/sendMail.js";
 const content = {
   subject: "Successfully Subscribed the Mail",
   title: "You're In!",
-  message: `Congratulations! You have successfully subscribed to our mailing list. You'll now receive updates, newsletters, and exciting news directly in your inbox.`,
+  message:
+    "Congratulations! You have successfully subscribed to our mailing list. You'll now receive updates, newsletters, and exciting news directly in your inbox.",
   buttonText: "Click here for unsubscribe",
   buttonUrl: "https://gbu-crc.onrender.com//api/subscriptions/unsubscribe",
 };
