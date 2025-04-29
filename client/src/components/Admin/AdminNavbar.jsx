@@ -5,7 +5,6 @@ import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import Bgimage from "../../assets/Vinay_kumar.jpeg";
 import React from "react";
-
 const AdminNavbar = () => {
   const navigate = useNavigate();
   const { adminData, setAdminData, setAdminToken } = useContext(AppContext);
