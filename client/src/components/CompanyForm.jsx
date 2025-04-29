@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 const CompanyForm = () => {
   const [formData, setFormData] = useState({

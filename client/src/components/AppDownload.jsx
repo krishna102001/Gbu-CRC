@@ -1,6 +1,6 @@
 import Bgimage from "../assets/Vinay_kumar.jpeg";
 import { motion } from "framer-motion";
-
+import React from "react";
 const AppDownload = () => {
   return (
     <motion.div

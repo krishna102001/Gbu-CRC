@@ -198,7 +198,7 @@ const Footer = () => {
             </a>
             <p className='text-sm text-gray-400 mt-4 min-[500px]:mt-0 px-10'>
               © 2025{" "}
-              <a href='https://gbu.ac.in' target='_blank'>
+              <a href='https://gbu.ac.in' target='_blank' rel='noreferrer'>
                 GBU
               </a>
               . All rights reserved.

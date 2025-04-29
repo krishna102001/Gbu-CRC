@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
+import React from "react";
 
 const UserLogin = () => {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const UserLogin = () => {
             }
             if (isVerified) {
               setIsRegistered(true);
-              return setIsTextDataSubmited(true);
+              setIsTextDataSubmited(true);
             } else {
               toast.error("Verify OTP Also");
             }
@@ -130,7 +131,7 @@ const UserLogin = () => {
         }
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message);
     }
   };
 
@@ -146,7 +147,7 @@ const UserLogin = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -163,7 +164,7 @@ const UserLogin = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
   useEffect(() => {

@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 import logo from "../assets/gbu_logo.png";
+import React from "react";
 
 const Dashboard = () => {
   const navigate = useNavigate();

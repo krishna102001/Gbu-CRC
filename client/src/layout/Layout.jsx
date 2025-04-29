@@ -1,5 +1,6 @@
 import AdminNavbar from "../components/Admin/AdminNavbar";
 import AdminFooter from "../components/Admin/AdminFooter";
+import React from "react";
 
 const Layout = ({ children }) => {
   return (

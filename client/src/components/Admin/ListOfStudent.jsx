@@ -5,6 +5,7 @@ import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import Loading from "../Loading";
 import { assets } from "../../assets/assets";
+import React from "react";
 
 const ListOfStudent = () => {
   const { backendUrl, adminToken } = useContext(AppContext);

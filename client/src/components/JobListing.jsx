@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { AppContext } from "../context/AppContext";
 import { assets, JobCategories } from "../assets/assets";
 import JobCard from "./JobCard";

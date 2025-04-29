@@ -173,6 +173,32 @@ export const postJob = async (req, res) => {
   }
 };
 
+// edit job ✅
+export const editJob = async (req, res) => {
+  const { title, category, description, level, location, salary } = req.body;
+  const userId = req.userId;
+  const jobId = req.params["id"];
+  console.log("job id ", jobId);
+  try {
+    const company = await Company.findOne({ userId });
+    if (!company) {
+      return res
+        .status(403)
+        .json({ success: false, message: "Company not exist" });
+    }
+    const companyId = company._id;
+    const data = await Job.updateOne(
+      { _id: jobId, companyId },
+      { title, category, description, level, location, salary }
+    );
+    res
+      .status(200)
+      .json({ success: true, message: "Successfully updated the job" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
 // Get Company Job Applicants ✅
 export const getCompanyJobApplicants = async (req, res) => {
   try {

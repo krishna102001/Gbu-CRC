@@ -1,6 +1,6 @@
 import logo from "../../assets/gbu_logo.png";
 import { motion } from "framer-motion";
-
+import React from "react";
 const AdminFooter = () => {
   return (
     <section className='pt-16 pb-7 bg-gray-900 '>

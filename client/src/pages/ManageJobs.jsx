@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Loading from "../components/Loading";
 import { motion } from "framer-motion";
+import React from "react";
 
 const ManageJobs = () => {
   const navigate = useNavigate();
