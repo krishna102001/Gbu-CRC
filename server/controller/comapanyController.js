@@ -5,9 +5,27 @@ import generateToken from "../utils/generateToken.js";
 import Job from "../models/Job.js";
 import JobApplication from "../models/JobApplication.js";
 import User from "../models/User.js";
+import {
+  getUserDataSchema,
+  loginUserSchema,
+  postJobSchema,
+  registerHRSchema,
+} from "../validation/validationSchema.js";
+
 // Register a HR ✅
 export const registerHR = async (req, res) => {
   const { name, email, password, role } = req.body;
+  const result = registerHRSchema.safeParse({
+    name,
+    password,
+    email,
+    role,
+  });
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Incorrect Format" });
+  }
 
   const imageFile = req.file;
 
@@ -55,6 +73,16 @@ export const registerHR = async (req, res) => {
 // Register Company ✅
 export const registerCompany = async (req, res) => {
   const { name, email, phone } = req.body;
+  const result = registerHRSchema.safeParse({
+    name,
+    email,
+    phone,
+  });
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Incorrect Format" });
+  }
   const imageFile = req.file;
   console.log(name, email, phone, imageFile);
   if (!name || !email || !phone || !imageFile) {
@@ -95,7 +123,12 @@ export const registerCompany = async (req, res) => {
 // Hr Login ✅
 export const loginHR = async (req, res) => {
   const { email, password } = req.body;
-
+  const result = loginUserSchema.safeParse({ email, password });
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Incorrect Format" });
+  }
   try {
     const hr = await User.findOne({ email });
     console.log(hr.password);
@@ -126,7 +159,12 @@ export const loginHR = async (req, res) => {
 // Get company data ✅
 export const getCompanyData = async (req, res) => {
   const userId = req.userId;
-
+  const result = getUserDataSchema.safeParse(userId);
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Incorrect Format" });
+  }
   try {
     const company = await Company.findOne({ userId });
     res.json({ sucess: true, company });
@@ -143,7 +181,19 @@ export const postJob = async (req, res) => {
   const { title, description, location, salary, level, category } = req.body;
 
   const userId = req.userId;
-
+  const result = postJobSchema.safeParse({
+    title,
+    description,
+    location,
+    salary,
+    level,
+    category,
+  });
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Incorrect Format" });
+  }
   try {
     const company = await Company.findOne({ userId });
     if (!company) {
@@ -178,6 +228,19 @@ export const editJob = async (req, res) => {
   const { title, category, description, level, location, salary } = req.body;
   const userId = req.userId;
   const jobId = req.params["id"];
+  const result = postJobSchema.safeParse({
+    title,
+    description,
+    location,
+    salary,
+    level,
+    category,
+  });
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Incorrect Format" });
+  }
   console.log("job id ", jobId);
   try {
     const company = await Company.findOne({ userId });
@@ -203,6 +266,12 @@ export const editJob = async (req, res) => {
 export const getCompanyJobApplicants = async (req, res) => {
   try {
     const userId = req.userId;
+    const result = getUserDataSchema.safeParse(userId);
+    if (!result.success) {
+      return res
+        .status(400)
+        .json({ success: false, messsage: "Incorrect Format" });
+    }
 
     const company = await Company.findOne({ userId });
     const companyId = company._id;
@@ -223,6 +292,12 @@ export const getCompanyJobApplicants = async (req, res) => {
 export const getCompanyPostedJobs = async (req, res) => {
   try {
     const userId = req.userId;
+    const result = getUserDataSchema.safeParse(userId);
+    if (!result.success) {
+      return res
+        .status(400)
+        .json({ success: false, messsage: "Incorrect Format" });
+    }
     const company = await Company.findOne({ userId });
     const companyId = company._id;
     console.log("companyId:", companyId);
@@ -282,6 +357,12 @@ export const changeVisiblity = async (req, res) => {
     const { id } = req.body;
 
     const userId = req.userId;
+    const result = getUserDataSchema.safeParse(id);
+    if (!result.success) {
+      return res
+        .status(400)
+        .json({ success: false, messsage: "Incorrect Format" });
+    }
 
     const company = await Company.findOne({ userId });
     const companyId = company._id;

@@ -3,10 +3,20 @@ import { redisClient } from "../config/redis.js";
 import Student from "../models/Student.js";
 import { QdrantVectorStore } from "@langchain/qdrant";
 import { PromptTemplate } from "@langchain/core/prompts";
+import {
+  addStudentSchema,
+  chatWithAISchema,
+} from "../validation/validationSchema.js";
 
 //adding student logic ✅
 export const addStudent = async (req, res) => {
   const { registration, name, phone } = req.body;
+  const result = addStudentSchema.safeParse({ registration, name, phone });
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Fields format invalids" });
+  }
   if (!registration || !name || !phone) {
     return res.json({ success: false, message: "All Fields Required" });
   }
@@ -67,6 +77,12 @@ export const uploadResumePdf = async (req, res) => {
 // student chat with ai
 export const chatWithAI = async (req, res) => {
   const { query } = req.body;
+  const result = chatWithAISchema.safeParse(query);
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Query format invalids" });
+  }
   if (!query) {
     return res
       .status(400)

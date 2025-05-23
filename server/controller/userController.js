@@ -11,10 +11,31 @@ import { sendMail } from "../utils/sendMail.js";
 import Otp from "../models/Otp.js";
 import Resume from "../models/Resume.js";
 import Company from "../models/Company.js";
+import {
+  applyForJobSchema,
+  checkStudentSchema,
+  getUserDataSchema,
+  loginUserSchema,
+  registerUserSchema,
+  verifyOtpSchema,
+} from "../validation/placementRecordSchema.js";
 
 // Register User Data 👍🏻
 export const registerUser = async (req, res) => {
   const { name, password, registration, email, role } = req.body;
+
+  const result = registerUserSchema.safeParse({
+    name,
+    password,
+    registration,
+    email,
+    role,
+  });
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Incorrect Format" });
+  }
   const imageFile = req.file; //imageFile
 
   if (!name || !password || !email) {
@@ -63,6 +84,12 @@ export const registerUser = async (req, res) => {
 //login user ✅
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
+  const result = loginUserSchema.safeParse({ email, password });
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Incorrect Format" });
+  }
   // console.log(email, password);
   try {
     const user = await User.findOne({ email });
@@ -102,6 +129,12 @@ export const loginUser = async (req, res) => {
 // Get user Data ✅
 export const getUserData = async (req, res) => {
   let userId = req.userId;
+  const result = getUserDataSchema.safeParse(userId);
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Incorrect Format" });
+  }
   console.log(userId);
   console.log("User ID from request:", userId); // Log the user ID
 
@@ -123,6 +156,12 @@ export const getUserData = async (req, res) => {
 export const applyForJob = async (req, res) => {
   const { jobId } = req.body;
   const userId = req.userId;
+  const result = applyForJobSchema.safeParse({ jobId, userId });
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Incorrect Format" });
+  }
   console.log(userId);
   console.log("User ID from request:", userId); // Log the user ID
 
@@ -163,6 +202,12 @@ export const applyForJob = async (req, res) => {
 export const getUserJobApplications = async (req, res) => {
   try {
     let userId = req.userId;
+    const result = getUserDataSchema.safeParse(userId);
+    if (!result.success) {
+      return res
+        .status(400)
+        .json({ success: false, messsage: "Incorrect Format" });
+    }
     console.log(userId);
     console.log("User ID from request:", userId); // Log the user ID
 
@@ -188,6 +233,12 @@ export const getUserJobApplications = async (req, res) => {
 export const updateUserResume = async (req, res) => {
   try {
     const userId = req.userId;
+    const result = getUserDataSchema.safeParse(userId);
+    if (!result.success) {
+      return res
+        .status(400)
+        .json({ success: false, messsage: "Incorrect Format" });
+    }
     const resumeFile = req.file;
 
     if (!resumeFile) {
@@ -256,6 +307,12 @@ export const updateUserResume = async (req, res) => {
 export const sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
+    const result = emailSubscribeSchema.safeParse(email);
+    if (!result.success) {
+      return res
+        .status(400)
+        .json({ success: false, message: "email id invalid" });
+    }
     const otp = generateOtp();
     const emailContent = {
       title: "Verify Your Account",
@@ -282,6 +339,12 @@ export const sendOtp = async (req, res) => {
 //Verify OTP of user ✅
 export const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
+  const result = verifyOtpSchema.safeParse({ email, otp });
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, message: "email/otp format invalid" });
+  }
 
   try {
     const otpExist = await Otp.findOne({ email });
@@ -304,6 +367,12 @@ export const verifyOtp = async (req, res) => {
 //check-student ✅
 export const checkStudent = async (req, res) => {
   const { registration } = req.body;
+  const result = checkStudentSchema.safeParse(registration);
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, message: "registration id format invalid" });
+  }
   try {
     const studentExist = await Student.findOne({ registration }); // check user is registered with univeristy or not
     if (!studentExist) {

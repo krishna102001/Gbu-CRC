@@ -1,5 +1,6 @@
 import Subscription from "../models/Subscriptions.js";
 import { sendMail } from "../utils/sendMail.js";
+import { emailSubscribeSchema } from "../validation/placementRecordSchema.js";
 
 const content = {
   subject: "Successfully Subscribed the Mail",
@@ -12,6 +13,12 @@ const content = {
 
 export const emailSubscribe = async (req, res) => {
   const { email } = req.body;
+  const result = emailSubscribeSchema.safeParse(email);
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, message: "email id invalid" });
+  }
   try {
     const data = await Subscription.findOne({ email });
     if (data) {
@@ -32,6 +39,12 @@ export const emailSubscribe = async (req, res) => {
 
 export const emailUnSubscribe = async (req, res) => {
   const { email } = req.body;
+  const result = emailSubscribeSchema.safeParse(email);
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, message: "email id invalid" });
+  }
   try {
     await Subscription.deleteOne({ email });
     res
