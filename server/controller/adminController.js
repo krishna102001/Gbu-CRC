@@ -218,6 +218,12 @@ export const editPlacementRecord = async (req, res) => {
 //delete the placement record ✅
 export const deletePlacementRecord = async (req, res) => {
   const id = req.params.id;
+  const result = getUserDataSchema.safeParse(id);
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ success: false, messsage: "Incorrect Format" });
+  }
   try {
     const data = await PlacementRecord.findOneAndDelete({ _id: id });
     if (!data) {
