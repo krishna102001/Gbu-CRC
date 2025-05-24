@@ -14,11 +14,12 @@ import Company from "../models/Company.js";
 import {
   applyForJobSchema,
   checkStudentSchema,
+  emailSubscribeSchema,
   getUserDataSchema,
   loginUserSchema,
   registerUserSchema,
   verifyOtpSchema,
-} from "../validation/placementRecordSchema.js";
+} from "../validation/validationSchema.js";
 
 // Register User Data 👍🏻
 export const registerUser = async (req, res) => {
@@ -34,13 +35,13 @@ export const registerUser = async (req, res) => {
   if (!result.success) {
     return res
       .status(400)
-      .json({ success: false, messsage: "Incorrect Format" });
+      .json({ success: false, message: "Incorrect Format" });
   }
   const imageFile = req.file; //imageFile
 
   if (!name || !password || !email) {
     // every data is present or not
-    return res.json({ success: false, messsage: "All Fields Are Required" });
+    return res.json({ success: false, message: "All Fields Are Required" });
   }
   try {
     const userExist = await User.findOne({ email }); // check already account exist or not
@@ -88,7 +89,7 @@ export const loginUser = async (req, res) => {
   if (!result.success) {
     return res
       .status(400)
-      .json({ success: false, messsage: "Incorrect Format" });
+      .json({ success: false, message: "Incorrect Format" });
   }
   // console.log(email, password);
   try {
