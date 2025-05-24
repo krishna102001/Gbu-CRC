@@ -14,11 +14,12 @@ import Company from "../models/Company.js";
 import {
   applyForJobSchema,
   checkStudentSchema,
+  emailSubscribeSchema,
   getUserDataSchema,
   loginUserSchema,
   registerUserSchema,
   verifyOtpSchema,
-} from "../validation/placementRecordSchema.js";
+} from "../validation/validationSchema.js";
 
 // Register User Data 👍🏻
 export const registerUser = async (req, res) => {

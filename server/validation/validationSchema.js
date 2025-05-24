@@ -12,7 +12,7 @@ export const emailSubscribeSchema = z.string().email();
 export const registerUserSchema = z.object({
   name: z.string(),
   password: z.string().min(5),
-  registration: z.string().min(11),
+  registration: z.string(),
   email: z.string().email(),
   role: z.enum(["hr", "admin", "student", "pc"]),
 });
@@ -61,7 +61,7 @@ export const postJobSchema = z.object({
   title: z.string().min(5),
   description: z.string().min(30),
   location: z.string(),
-  salary: z.number(),
+  salary: z.string(),
   level: z.string(),
   category: z.string(),
 });

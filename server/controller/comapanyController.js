@@ -9,6 +9,7 @@ import {
   getUserDataSchema,
   loginUserSchema,
   postJobSchema,
+  registerCompanySchema,
   registerHRSchema,
 } from "../validation/validationSchema.js";
 
@@ -73,7 +74,7 @@ export const registerHR = async (req, res) => {
 // Register Company ✅
 export const registerCompany = async (req, res) => {
   const { name, email, phone } = req.body;
-  const result = registerHRSchema.safeParse({
+  const result = registerCompanySchema.safeParse({
     name,
     email,
     phone,

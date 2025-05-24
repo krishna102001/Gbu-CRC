@@ -1,6 +1,6 @@
 import Subscription from "../models/Subscriptions.js";
 import { sendMail } from "../utils/sendMail.js";
-import { emailSubscribeSchema } from "../validation/placementRecordSchema.js";
+import { emailSubscribeSchema } from "../validation/validationSchema.js";
 
 const content = {
   subject: "Successfully Subscribed the Mail",

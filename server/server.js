@@ -22,7 +22,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Initialize Express
-const app = express();
+export const app = express();
 
 // Connect to MongoDB
 await connectDB();
@@ -65,7 +65,3 @@ setInterval(() => defaultOtpCleanup(), 1000 * 60);
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
-
-// Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server running on port ${port}`));

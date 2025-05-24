@@ -2,7 +2,7 @@ import Company from "../models/Company.js";
 import User from "../models/User.js";
 import JobApplication from "../models/JobApplication.js";
 import PlacementRecord from "../models/PlacementRecord.js";
-import { placementRecordSchema } from "../validation/placementRecordSchema.js";
+import { placementRecordSchema } from "../validation/validationSchema.js";
 import XLSX from "xlsx";
 import Student from "../models/Student.js";
 
