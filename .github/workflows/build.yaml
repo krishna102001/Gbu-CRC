@@ -7,18 +7,6 @@ on:
 jobs:
   Build-on-pull-request:
     runs-on: ubuntu-latest
-    env:
-      MONGODB_URI: mongodb://localhost:27017/test-db # ⬅️ Add this
-    services:
-      mongodb:
-        image: mongo:5.0
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "mongosh --eval 'db.runCommand({ ping: 1 })'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - name: clone repo
         uses: actions/checkout@v4
