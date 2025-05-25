@@ -1,16 +1,17 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import { MdUploadFile } from "react-icons/md";
 import { toast } from "react-toastify";
+
 const botMessage = [
   {
     role: "ai",
-    content: "Hello i am crc ai model.",
+    content: "Hello! I am CRC AI model 🤖",
   },
   {
     role: "ai",
-    content: "To know your ATS Score Upload the Resume First",
+    content: "To know your ATS Score, please upload your resume first 📄",
   },
 ];
 
@@ -19,31 +20,40 @@ const ResumeChat = () => {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const { backendUrl } = useContext(AppContext);
+
   useEffect(() => {
     setMessages(botMessage);
   }, []);
+
   const handleClick = async () => {
-    console.log(query);
-    if (query.length == 0) {
-      toast.error("provide job descriptions");
+    if (query.length === 0) {
+      toast.error("Please provide a job description.");
       return;
     }
     setLoading(true);
     setMessages((prev) => [...prev, { role: "user", content: query }]);
+
     try {
       const { data } = await axios.post(`${backendUrl}/api/students/chat/ai`, {
         query,
       });
+
       if (data.success) {
         setQuery("");
-        setMessages((prev) => [...prev, { role: "ai", content: data.message }]);
+        const aiMessage =
+          typeof data.message === "string"
+            ? { role: "ai", content: data.message }
+            : { role: "ai", content: data.message };
+
+        setMessages((prev) => [...prev, aiMessage]);
         setLoading(false);
       }
     } catch (error) {
       setLoading(false);
-      toast.error(error.response?.data?.message);
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
+
   return (
     <div className='flex flex-col justify-between min-h-[80vh] p-4'>
       <div>
@@ -63,8 +73,23 @@ const ResumeChat = () => {
 };
 
 const ResumeDisplay = ({ messages }) => {
+  const [expandedMessages, setExpandedMessages] = useState({});
+
+  const toggleExpand = (index) => {
+    setExpandedMessages((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+  const truncateText = (text, wordLimit = 30) => {
+    const words = text.trim().split(/\s+/);
+    if (words.length <= wordLimit) return text;
+    return words.slice(0, wordLimit).join(" ") + "...";
+  };
+
   return (
-    <div className=' flex-1 space-y-4 pr-2 overflow-y-auto '>
+    <div className='flex-1 space-y-4 pr-2 overflow-y-auto'>
       {messages.map((message, index) => (
         <div
           key={index}
@@ -79,12 +104,69 @@ const ResumeDisplay = ({ messages }) => {
           )}
 
           <div
-            className={`max-w-[70%] bg-gray-100 p-2 text-sm ${
-              message.role === "user" ? " rounded-tl-lg " : " rounded-tr-lg "
+            className={`max-w-[70%] bg-gray-100 p-3 text-sm ${
+              message.role === "user" ? "rounded-tl-lg" : "rounded-tr-lg"
             } rounded-bl-lg rounded-br-lg`}
           >
-            <h1>{message.content}</h1>
+            {typeof message.content === "string" ? (
+              <>
+                <p>
+                  {message.role === "user" && !expandedMessages[index]
+                    ? truncateText(message.content)
+                    : message.content}
+                </p>
+                {message.role === "user" &&
+                  message.content.trim().split(/\s+/).length > 30 && (
+                    <button
+                      onClick={() => toggleExpand(index)}
+                      className='text-blue-600 text-xs mt-1 underline'
+                    >
+                      {expandedMessages[index] ? "Show less" : "Show more"}
+                    </button>
+                  )}
+              </>
+            ) : (
+              <div className='space-y-2'>
+                <p className='font-semibold text-blue-700'>
+                  ✅ ATS Score: {message.content.ats_score} / 100
+                </p>
+                <div>
+                  <p className='font-semibold underline'>
+                    🔧 Key Missing Skills:
+                  </p>
+                  <ul className='list-disc ml-5 text-gray-700'>
+                    {message.content.key_missing_skill.map((skill, i) => (
+                      <li key={i}>{skill}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p className='font-semibold underline'>🔑 Keyword Match:</p>
+                  <div className='flex flex-wrap gap-2 mt-1'>
+                    {message.content.keyword_analysis.map((word, i) => (
+                      <span
+                        key={i}
+                        className='bg-blue-200 text-blue-800 px-2 py-1 rounded-md text-xs'
+                      >
+                        {word}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className='font-semibold underline'>
+                    📈 Resume Improvement Suggestions:
+                  </p>
+                  <ul className='list-decimal ml-5 text-gray-700'>
+                    {message.content.improvement_resume.map((tip, i) => (
+                      <li key={i}>{tip}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
           </div>
+
           {message.role === "user" && (
             <div className='w-8 h-8 bg-blue-600 p-2 rounded-full flex items-center justify-center text-white'>
               U
@@ -104,43 +186,46 @@ const ResumeInput = ({
   loading,
 }) => {
   const { backendUrl } = useContext(AppContext);
-  console.log(backendUrl);
+
   const handlePdfFile = () => {
     const inputFile = document.createElement("input");
     inputFile.setAttribute("type", "file");
     inputFile.setAttribute("accept", "application/pdf");
     inputFile.click();
-    //backend main resume pdf file send karna hain
+
     inputFile.addEventListener("change", async () => {
       try {
         const formData = new FormData();
         formData.append("pdf", inputFile.files[0]);
+
         const { data } = await axios.post(
           `${backendUrl}/api/students/upload/pdf`,
           formData
         );
+
         if (data.success) {
           toast.success(data.message);
           setMessages((prev) => [
             ...prev,
             {
               role: "user",
-              content: "Resume Uploaded Successfully ✅",
+              content: "📤 Resume Uploaded Successfully ✅",
             },
             {
               role: "ai",
-              content: "Now provide me Job Descriptions(JD)",
+              content: "Now provide me the Job Description (JD) 📋",
             },
           ]);
         }
       } catch (error) {
-        toast.error(error.response?.data?.message);
-        console.log(error);
+        toast.error(error.response?.data?.message || "Upload failed");
+        console.error(error);
       }
     });
   };
+
   return (
-    <div className=' mt-4 flex  items-center gap-2'>
+    <div className='mt-4 flex items-center gap-2'>
       <div
         className='hover:bg-gray-600 p-1 rounded-full relative group'
         onClick={handlePdfFile}
@@ -149,13 +234,13 @@ const ResumeInput = ({
           size={32}
           className='hover:text-white/70 cursor-pointer'
         />
-        <div className='absolute hidden group-hover:block text-xs -top-10 bg-black/30 p-1 left-0 rounded'>
+        <div className='absolute hidden group-hover:block text-xs -top-10 bg-black/70 text-white px-2 py-1 rounded'>
           Upload Resume
         </div>
       </div>
       <input
         type='text'
-        placeholder='write job description  here .....'
+        placeholder='Write job description here...'
         className='flex-1 p-2 rounded-md border border-black/40 focus:outline-none focus:ring-2 focus:ring-blue-400'
         value={query}
         onChange={(e) => setQuery(e.target.value)}

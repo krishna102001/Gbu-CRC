@@ -117,21 +117,31 @@ export const chatWithAI = async (req, res) => {
     console.log(data);
 
     const template = `
-  You are an ATS (Applicant Tracking System) expert analyzing resumes against job descriptions.
-  
-  JOB DESCRIPTION:
-  ${query}
-  
-  CANDIDATE'S RESUME:
-  ${JSON.stringify(data)}
-  
-  Please provide:
-  1. An ATS compatibility score from 0-100
-  2. Key missing skills or qualifications
-  3. Keyword analysis (missing important keywords)
-  4. Specific suggestions to improve the resume for this job
-  
-  Format your response in clear sections.
+ You are an Applicant Tracking System (ATS) expert. Analyze the following candidate resume against the provided job description.
+
+JOB DESCRIPTION:
+${query}
+
+CANDIDATE RESUME:
+${JSON.stringify(data)}
+
+Your task is to provide a DETAILED and EXHAUSTIVE analysis. Output ONLY the following JSON structure with:
+
+- "ats_score": (Integer, 0 to 100) — How well the resume matches the job description.
+- "key_missing_skill": (Array of strings) — Crucial skills or qualifications from the job description missing in the resume.
+- "keyword_analysis": (Array of strings) — Important keywords from the job description not found in the resume.
+- "improvement_resume": (Array of strings) — Specific, actionable suggestions to enhance the resume for this role.
+
+**Output only this JSON (no markdown, text, or explanations):**
+{
+  "ats_score": 0,
+  "key_missing_skill": [],
+  "keyword_analysis": [],
+  "improvement_resume": []
+}
+
+All arrays should contain at least 5–7 relevant items if applicable. The analysis should be thorough and accurate.
+
   `;
 
     console.log(template);
@@ -143,7 +153,16 @@ export const chatWithAI = async (req, res) => {
 
     const result = await llm.invoke(template);
 
-    res.status(200).json({ success: true, message: result.content });
+    const rawAIResponse = result.content;
+
+    const cleaned = rawAIResponse
+      .replace(/```json\n?/, "")
+      .replace(/\n?```/, "");
+    console.log(cleaned);
+    let atsData;
+    atsData = JSON.parse(cleaned);
+
+    res.status(200).json({ success: true, message: atsData });
   } catch (error) {
     console.log(error);
     res.status(400).json({ success: false, message: "llm not working" });
